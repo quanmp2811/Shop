@@ -1,0 +1,1009 @@
+<html class="js flexbox canvas canvastext webgl no-touch geolocation postmessage no-websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers no-applicationcache svg inlinesvg smil svgclippaths translated-ltr"><head>
+    <title>An Nhi - Thời trang trẻ em</title>
+    <link rel="icon" type="image/png" href="./images/logo.png">
+    <link rel="shortcut icon" type="image/png" href="./images/logo.png">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="author" content="">
+    <meta name="keywords" content="ecommerce, kids, store">
+    <meta name="description" content="Bootstrap 5 Kids Store Ecommerce HTML CSS Template">
+    <link rel="stylesheet" type="text/css" href="./styles/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="./styles/vendor.css">
+    <link rel="stylesheet" type="text/css" href="./styles/style.css">
+    <link rel="stylesheet" href="./styles/swiper-bundle.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap&subset=vietnamese" rel="stylesheet">
+    <!-- script
+    ================================================== -->
+    <script src="./scripts/modernizr.js"></script>
+    <script defer src="./scripts/google-sheets-config.js"></script>
+    <script defer src="./scripts/store-data.js"></script>
+  </head>
+  <body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" tabindex="0">
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol xmlns="http://www.w3.org/2000/svg" id="navbar-icon" viewBox="0 0 16 16">
+        <path d="M14 10.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 .5-.5zm0-3a.5.5 0 0 0-.5-.5h-7a.5.5 0 0 0 0 1h7a.5.5 0 0 0 .5-.5zm0-3a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0 0 1h11a.5.5 0 0 0 .5-.5z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="chevron-left" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="chevron-right" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/symbol" id="cart" viewBox="0 0 21 21">
+        <g fill="none" fill-rule="evenodd">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M5 6.5h12.5l-1.586 5.55a2 2 0 0 1-1.923 1.45h-6.7a2 2 0 0 1-1.989-1.78L4.5 4.5h-2" />
+          <g fill="currentColor" transform="translate(2 4)">
+            <circle cx="5" cy="12" r="1" />
+            <circle cx="13" cy="12" r="1" />
+          </g>
+        </g>
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="quote" viewBox="0 0 167 130" fill="none">
+        <g clip-path="url(#clip0_95_7)">
+          <path d="M27 7.79997C31 2.59996 35 -0.200036 39 -0.60003C43.4 -1.40002 47 -0.600019 49.8 1.79997C53 3.79997 54.8 6.99997 55.2 11.4C55.6 15.8 53.8 20.6 49.8 25.8C43.4 34.2 38.8 42.8 36 51.6C33.6 60 32.4 67.8 32.4 75L30.6 63C41 63 49.4 66 55.8 72C62.2 77.6 65.4 85.4 65.4 95.4C65.4 105 62.4 113 56.4 119.4C50.4 125.4 42.6 128.4 33 128.4C22.6 128.4 14.4 125 8.4 118.2C2.8 111 0 100.8 0 87.6C0 79.2 0.6 70.6 1.8 61.8C3.4 52.6 6.2 43.4 10.2 34.2C14.6 25 20.2 16.2 27 7.79997ZM126.6 7.79997C130.6 2.59996 134.6 -0.200036 138.6 -0.60003C143 -1.40002 146.6 -0.600019 149.4 1.79997C152.6 3.79997 154.4 6.99997 154.8 11.4C155.2 15.8 153.4 20.6 149.4 25.8C143 34.2 138.4 42.8 135.6 51.6C133.2 60 132 67.8 132 75L130.2 63C140.6 63 149 66 155.4 72C161.8 77.6 165 85.4 165 95.4C165 105 162 113 156 119.4C150 125.4 142.2 128.4 132.6 128.4C122.2 128.4 114 125 108 118.2C102.4 111 99.6 100.8 99.6 87.6C99.6 79.2 100.2 70.6 101.4 61.8C103 52.6 105.8 43.4 109.8 34.2C114.2 25 119.8 16.2 126.6 7.79997Z" fill="#F7E4E4" />
+        </g>
+        <defs>
+          <clippath id="clip0_95_7">
+            <rect width="167" height="130" fill="white" />
+          </clippath>
+        </defs>
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="user" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="6" r="4" />
+          <path d="M20 17.5c0 2.485 0 4.5-8 4.5s-8-2.015-8-4.5S7.582 13 12 13s8 2.015 8 4.5Z" />
+        </g>
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="wishlist" viewBox="0 0 24 24">
+        <path fill="currentColor" d="m8.962 18.91l.464-.588l-.464.589ZM12 5.5l-.54.52a.75.75 0 0 0 1.08 0L12 5.5Zm3.038 13.41l.465.59l-.465-.59Zm-5.612-.588C7.91 17.127 6.253 15.96 4.938 14.48C3.65 13.028 2.75 11.334 2.75 9.137h-1.5c0 2.666 1.11 4.7 2.567 6.339c1.43 1.61 3.254 2.9 4.68 4.024l.93-1.178ZM2.75 9.137c0-2.15 1.215-3.954 2.874-4.713c1.612-.737 3.778-.541 5.836 1.597l1.08-1.04C10.1 2.444 7.264 2.025 5 3.06C2.786 4.073 1.25 6.425 1.25 9.137h1.5ZM8.497 19.5c.513.404 1.063.834 1.62 1.16c.557.325 1.193.59 1.883.59v-1.5c-.31 0-.674-.12-1.126-.385c-.453-.264-.922-.628-1.448-1.043L8.497 19.5Zm7.006 0c1.426-1.125 3.25-2.413 4.68-4.024c1.457-1.64 2.567-3.673 2.567-6.339h-1.5c0 2.197-.9 3.891-2.188 5.343c-1.315 1.48-2.972 2.647-4.488 3.842l.929 1.178ZM22.75 9.137c0-2.712-1.535-5.064-3.75-6.077c-2.264-1.035-5.098-.616-7.54 1.92l1.08 1.04c2.058-2.137 4.224-2.333 5.836-1.596c1.659.759 2.874 2.562 2.874 4.713h1.5Zm-8.176 9.185c-.526.415-.995.779-1.448 1.043c-.452.264-.816.385-1.126.385v1.5c.69 0 1.326-.265 1.883-.59c.558-.326 1.107-.756 1.62-1.16l-.929-1.178Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="search" viewBox="0 0 24 24">
+        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21l-4.343-4.343m0 0A8 8 0 1 0 5.343 5.343a8 8 0 0 0 11.314 11.314Z" />
+      </symbol>
+      <symbol xmlns="http://www.w3.org/2000/svg" id="teddybear" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M15.75 19.13c-.83 0-1.5-.84-1.5-1.88c0-1.03.67-1.87 1.5-1.87s1.5.84 1.5 1.87c0 1.04-.67 1.88-1.5 1.88M12 11.25c-1.24 0-2.25-.84-2.25-1.87c0-1.04 1.01-1.88 2.25-1.88s2.25.84 2.25 1.88c0 1.03-1.01 1.87-2.25 1.87m-3.75 7.88c-.83 0-1.5-.84-1.5-1.88c0-1.03.67-1.87 1.5-1.87s1.5.84 1.5 1.87c0 1.04-.67 1.88-1.5 1.88M12 8.25c.41 0 .75.34.75.75s-.34.75-.75.75s-.75-.34-.75-.75s.34-.75.75-.75M18.75 12c-.32 0-.63.07-.91.2c-.48-.61-1.13-1.13-1.91-1.53c.57-.8.91-1.77.91-2.82v-.06c1.09-.23 1.91-1.2 1.91-2.37c0-1.33-1.09-2.42-2.42-2.42c-.69 0-1.33.29-1.75.75a4.813 4.813 0 0 0-5.16 0C9 3.29 8.36 3 7.67 3C6.34 3 5.25 4.09 5.25 5.42c0 1.16.82 2.13 1.9 2.37v.06c0 1.05.35 2.03.91 2.82c-.77.4-1.42.92-1.9 1.53A2.24 2.24 0 0 0 3 14.25c0 1.25 1 2.25 2.25 2.25h.06c-.04.24-.06.5-.06.75c0 2.07 1.34 3.75 3 3.75c1.01 0 1.9-.63 2.45-1.59c.42.06.85.09 1.3.09c.45 0 .88-.03 1.3-.09c.55.96 1.44 1.59 2.45 1.59c1.66 0 3-1.68 3-3.75c0-.25-.02-.51-.06-.75h.06c1.25 0 2.25-1 2.25-2.25S20 12 18.75 12" />
+      </symbol>
+    </svg>
+    <div class="preloader" style="display: none;">
+      <div class="loader">
+        <div class="dot">
+          <svg class="teddybear svg-white" width="40" height="40">
+            <use xlink:href="#teddybear" />
+          </svg>
+        </div>
+        <div class="dot">
+          <svg class="teddybear svg-white" width="40" height="40">
+            <use xlink:href="#teddybear" />
+          </svg>
+        </div>
+        <div class="dot">
+          <svg class="teddybear svg-white" width="40" height="40">
+            <use xlink:href="#teddybear" />
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasLogin" aria-labelledby="My Login">
+      <div class="offcanvas-header">
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Đóng"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="login-detail">
+          <div class="login-form p-0">
+            <div class="col-lg-12 mx-auto">
+              <form id="login-form">
+                <input type="text" name="username" placeholder="Tên người dùng hoặc địa chỉ email *" class="mb-3 ps-3 text-input w-100">
+                <input type="password" name="password" placeholder="Mật khẩu" class="ps-3 text-input w-100">
+                <div class="checkbox d-flex justify-content-between mt-4">
+                  <p class="checkbox-form">
+                    <label>
+                      <input name="rememberme" type="checkbox" id="remember-me" value="forever"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Hãy nhớ đến tôi</font></font></label>
+                  </p>
+                  <p class="lost-password">
+                    <a href="#"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Bạn quên mật khẩu?</font></font></a>
+                  </p>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer mt-5 d-flex justify-content-center">
+            <button type="button" class="btn btn-primary w-100 mb-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Đăng nhập</font></font></button>
+            <button type="button" class="btn btn-outline-gray w-100"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Đăng ký</font></font></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasCart" aria-labelledby="My Cart">
+      <div class="offcanvas-header">
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Đóng"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="order-md-last">
+          <h4 class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-3">
+            <span class="text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Giỏ hàng của bạn</font></font></span>
+            <span class="badge bg-dark rounded-pill"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">3</font></font></span>
+          </h4>
+          <ul class="list-group mb-3">
+            <li class="list-group-item border-0 d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Chi tiêu cho bông</font></font></h6>
+                <small class="text-body-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Mô tả ngắn gọn</font></font></small>
+              </div>
+              <span class="text-body-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">320 đô la</font></font></span>
+            </li>
+            <li class="list-group-item border-0 d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Mẫu len</font></font></h6>
+                <small class="text-body-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Mô tả ngắn gọn</font></font></small>
+              </div>
+              <span class="text-body-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">320 đô la</font></font></span>
+            </li>
+            <li class="list-group-item border-0 d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Chú thỏ giản dị</font></font></h6>
+                <small class="text-body-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Mô tả ngắn gọn</font></font></small>
+              </div>
+              <span class="text-body-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">320 đô la</font></font></span>
+            </li>
+            <li class="list-group-item border-0 d-flex justify-content-between">
+              <span><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Tổng cộng (USD)</font></font></span>
+              <strong><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">960 đô la</font></font></strong>
+            </li>
+          </ul>
+          <button class="w-100 btn btn-primary btn-lg" type="submit"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Tiếp tục thanh toán</font></font></button>
+        </div>
+      </div>
+    </div>
+    <header id="header" class="site-header bg-light py-3">
+      <nav class="navbar navbar-expand-lg" aria-label="Thanh điều hướng Offcanvas lớn">
+        <div class="container-lg">
+          <a class="navbar-brand me-5" href="./index.html">
+            <img src="./images/logo.png" alt="thương hiệu">
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2" aria-label="Chuyển đổi điều hướng">
+            <svg class="navbar-icon" width="35" height="35">
+              <use xlink:href="#navbar-icon" />
+            </svg>
+          </button>
+          <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar2" aria-labelledby="offcanvasNavbar2Label">
+            <div class="offcanvas-header justify-content-center">
+              <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="offcanvas" aria-label="Đóng"></button>
+            </div>
+            <div class="offcanvas-body align-items-center">
+              <ul class="navbar-nav ms-5 flex-grow-1 pe-3">
+                <li class="nav-item ms-3">
+                  <a class="nav-link text-dark active" aria-current="page" href="./index.html"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Trang chủ</font></font></a>
+                </li>
+                <li class="nav-item ms-3">
+                  <a class="nav-link text-dark" href="./pages/about.html"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Về</font></font></a>
+                </li>
+                <li class="nav-item ms-3 dropdown">
+                  <a class="nav-link text-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Cửa hàng</font></font></a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="./pages/shop-with-sidebar.html" class="dropdown-item item-anchor"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Mua sắm với thanh bên</font></font><span class="badge bg-primary fs-6"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">CHUYÊN NGHIỆP</font></font></span></a>
+                    </li>
+                    <li>
+                      <a href="./pages/shop-three-column.html" class="dropdown-item item-anchor"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Cửa hàng Ba Cột</font></font><span class="badge bg-primary fs-6"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">CHUYÊN NGHIỆP</font></font></span></a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item ms-3 dropdown">
+                  <a class="nav-link text-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Trang</font></font></a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="#" class="dropdown-item item-anchor"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Thanh toán</font></font><span class="badge bg-primary fs-6"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">CHUYÊN NGHIỆP</font></font></span></a>
+                    </li>                    
+                    <li>
+                      <a href="./pages/faqs.html" class="dropdown-item item-anchor"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Câu hỏi thường gặp</font></font><span class="badge bg-primary fs-6"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">CHUYÊN NGHIỆP</font></font></span></a>
+                    </li>                    
+                    <li>
+                      <a href="./pages/single-product.html" class="dropdown-item item-anchor"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Chi tiết sản phẩm</font></font><span class="badge bg-primary fs-6"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">CHUYÊN NGHIỆP</font></font></span></a>
+                    </li>
+                    <li>
+                      <a href="#" class="dropdown-item item-anchor"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Bài đăng đơn</font></font><span class="badge bg-primary fs-6"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">CHUYÊN NGHIỆP</font></font></span></a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item ms-3 dropdown">
+                  <a class="nav-link text-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Blog</font></font></a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="#" class="dropdown-item item-anchor"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Blog ba cột</font></font><span class="badge bg-primary fs-6"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">CHUYÊN NGHIỆP</font></font></span></a>
+                    </li>
+                    <li>
+                      <a href="#" class="dropdown-item item-anchor"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Blog có thanh bên</font></font><span class="badge bg-primary fs-6"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">CHUYÊN NGHIỆP</font></font></span></a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              <div class="navbar-users">
+                <ul class="user-items list-unstyled d-none d-lg-flex justify-content-end align-items-center order-3 flex-grow-1 gap-4 m-0">
+                  <li>
+                    <svg class="search" width="18" height="18">
+                      <use xlink:href="#search" />
+                    </svg>
+                    <input type="text" placeholder="Tìm kiếm tại đây..." class="outline-none border-0 bg-transparent fst-italic">
+                  </li>
+                  <li>
+                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLogin" aria-controls="offcanvasLogin">
+                      <svg class="user" width="18" height="18">
+                        <use xlink:href="#user" />
+                      </svg>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLogin" aria-controls="offcanvasLogin">
+                      <svg class="wishlist" width="18" height="18">
+                        <use xlink:href="#wishlist" />
+                      </svg>
+                    </a>
+                  </li>
+                  <li class="position-relative">
+                    <a href="./pages/cart.html" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                      <svg class="cart" width="18" height="18">
+                        <use xlink:href="#cart" />
+                      </svg>
+                      <span class="bg-primary text-light rounded-pill position-absolute text-center"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">0</font></font></span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <section id="intro" class="bg-linear">
+      <div class="container-lg">
+        <div class="swiper main-swiper pt-5 swiper-fade swiper-initialized swiper-horizontal swiper-watch-progress swiper-backface-hidden">
+          <div class="swiper-wrapper" id="swiper-wrapper-bb228ef1ef7110e9c" aria-live="polite">
+            <div class="swiper-slide swiper-slide-visible swiper-slide-fully-visible swiper-slide-active" role="group" aria-label="1/3" style="width: 920px; opacity: 1; transform: translate3d(0px, 0px, 0px);">
+              <div class="banner-item d-flex text-center align-items-center">
+                <div class="row">
+                  <div class="col-lg-7">
+                    <div class="image-holder mb-lg-0 mb-md-2">
+                      <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="sản phẩm" class="img-fluid rounded-4 banner-image">
+                    </div>
+                  </div>
+                  <div class="col-lg-5 col-md-11 col-sm-10 mx-auto">
+                    <div class="banner-content w-100 h-100 position-relative bg-light border rounded-4 mx-auto d-flex align-items-center">
+                      <div class="col-lg-9 col-md-6 col-sm-8 text-center mx-auto py-lg-6">
+                        <h1 class="display-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Giảm giá</font></font><span class="display-4 text-secondary d-block"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Về đồ chơi nhồi bông</font></font></span>
+                        </h1>
+                        <p><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Bạn đang tìm kiếm một món đồ chơi mềm mại mang lại niềm vui và sự thoải mái cho cả trẻ em và người lớn? Không cần tìm đâu xa, bộ sưu tập đồ chơi của chúng tôi rất tuyệt vời.</font></font></p>
+                        <div class="btn-center mt-4">
+                          <a href="./pages/shop-with-sidebar.html" class="btn btn-primary btn-md text-uppercase rounded-0"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Mua ngay</font></font></a>
+                        </div>
+                      </div>
+                      <div class="bg-pattern-overlay position-absolute">
+                        <img src="./images/pattern-overlay1.png" alt="mẫu" class="img-fluid pattern-overlay">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide swiper-slide-next" role="group" aria-label="2/3" style="width: 920px; opacity: 0; transform: translate3d(-920px, 0px, 0px);">
+              <div class="banner-item d-flex text-center align-items-center">
+                <div class="row">
+                  <div class="col-lg-7">
+                    <div class="image-holder mb-lg-0 mb-md-2">
+                      <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="sản phẩm" class="img-fluid rounded-4">
+                    </div>
+                  </div>
+                  <div class="col-lg-5 col-md-11 col-sm-10 mx-auto">
+                    <div class="banner-content w-100 h-100 position-relative bg-light border rounded-4 mx-auto d-flex align-items-center">
+                      <div class="col-lg-9 col-md-6 col-sm-8 text-center mx-auto py-lg-6">
+                        <h1 class="display-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Búp bê</font></font><span class="display-4 text-secondary d-block"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Cửa hàng trực tuyến</font></font></span>
+                        </h1>
+                        <p><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Bạn đang tìm kiếm một món đồ chơi mềm mại mang lại niềm vui và sự thoải mái cho cả trẻ em và người lớn? Không cần tìm đâu xa, bộ sưu tập đồ chơi của chúng tôi rất tuyệt vời.</font></font></p>
+                        <div class="btn-center mt-4">
+                          <a href="./pages/shop-with-sidebar.html" class="btn btn-primary btn-md text-uppercase rounded-0"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Mua ngay</font></font></a>
+                        </div>
+                      </div>
+                      <div class="bg-pattern-overlay position-absolute">
+                        <img src="./images/pattern-overlay1.png" alt="mẫu" class="img-fluid">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide" role="group" aria-label="3/3" style="width: 920px; opacity: 0; transform: translate3d(-1840px, 0px, 0px);">
+              <div class="banner-item d-flex text-center align-items-center">
+                <div class="row">
+                  <div class="col-lg-7">
+                    <div class="image-holder mb-lg-0 mb-md-2">
+                      <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="sản phẩm" class="img-fluid rounded-4">
+                    </div>
+                  </div>
+                  <div class="col-lg-5 col-md-11 col-sm-10 mx-auto">
+                    <div class="banner-content w-100 h-100 position-relative bg-light border rounded-4 mx-auto d-flex align-items-center">
+                      <div class="col-lg-9 col-md-6 col-sm-8 text-center mx-auto py-lg-6">
+                        <h1 class="display-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Dễ thương</font></font><span class="display-4 text-secondary d-block"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Đồ chơi nhồi bông</font></font></span>
+                        </h1>
+                        <p><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tạm thời, sed, quidem explicabo ea velit đẩy lùi saepe obcaecati quo magni rerum.</font></font></p>
+                        <div class="btn-center mt-4">
+                          <a href="./pages/shop-with-sidebar.html" class="btn btn-primary btn-md text-uppercase rounded-0"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Mua ngay</font></font></a>
+                        </div>
+                      </div>
+                      <div class="bg-pattern-overlay position-absolute">
+                        <img src="./images/pattern-overlay1.png" alt="mẫu" class="img-fluid">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-arrow-wrap position-absolute d-flex align-items-center">
+            <div class="swiper-arrow swiper-arrow-prev position-absolute bg-gray-1 p-3 swiper-button-disabled" tabindex="-1" role="button" aria-label="Trang trước" aria-disabled="true">
+              <svg class="chevron-left" width="25" height="25">
+                <use xlink:href="#chevron-left" />
+              </svg>
+            </div>
+            <div class="swiper-arrow swiper-arrow-next position-absolute bg-gray-1 p-3" tabindex="0" role="button" aria-label="Trang chiếu tiếp theo">
+              <svg class="chevron-right" width="25" height="25">
+                <use xlink:href="#chevron-right" />
+              </svg>
+            </div>
+          </div>
+        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+      </div>
+    </section>  
+    <section id="category" class="py-4 position-relative bg-light">
+      <div class="cloud-overlay position-absolute overflow-x-hidden w-100">
+        <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="lớp phủ biểu tượng">
+      </div>
+      <div class="container-lg">
+        <div class="row justify-content-center">
+          <div class="display-header text-center position-relative">
+            <h2 class="display-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Loại</font></font></h2>
+            <div class="icon-overlay position-absolute">
+              <img src="./images/star-icon-overlay.png" alt="lớp phủ biểu tượng">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="image-holder position-relative">
+              <img src="./images/vay.png" alt="đầm" class="img-fluid rounded-4">
+              <div class="btn-wrap position-absolute d-flex align-items-center justify-content-center">
+                <a href="./pages/shop-with-sidebar.html" class="btn btn-md btn-light text-uppercase rounded-0"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Váy</font></font></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="image-holder position-relative">
+              <img src="./images/quanao.png" alt="mũ" class="img-fluid rounded-4">
+              <div class="btn-wrap position-absolute d-flex align-items-center justify-content-center">
+                <a href="./pages/shop-with-sidebar.html" class="btn btn-md btn-light text-uppercase rounded-0"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Quần Áo</font></font></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="image-holder position-relative">
+              <img src="./images/phukien.png" alt="đồ chơi" class="img-fluid rounded-4">
+              <div class="btn-wrap position-absolute d-flex align-items-center justify-content-center">
+                <a href="./pages/shop-with-sidebar.html" class="btn btn-md btn-light text-uppercase rounded-0"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Phụ Kiện</font></font></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 mb-4">
+            <div class="image-holder position-relative">
+              <img src="./images/dochoi.png" alt="đồ chơi" class="img-fluid rounded-4">
+              <div class="btn-wrap position-absolute d-flex align-items-center justify-content-center">
+                <a href="./pages/shop-with-sidebar.html" class="btn btn-md btn-light text-uppercase rounded-0"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Đồ Chơi</font></font></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div id="scroll-top-btn" class="bg-light rounded-pill text-primary position-fixed show">
+      <svg class="teddybear" width="50" height="50">
+        <use xlink:href="#teddybear" />
+      </svg>
+    </div>
+    <section id="featured-product" class="py-lg-6 bg-light position-relative">
+      <div class="container-lg">
+        <div class="display-header text-center position-relative">
+          <div class="icon-overlay">
+            <img src="./images/star-icon-overlay.png" alt="lớp phủ biểu tượng">
+          </div>
+          <h2 class="display-2 mt-0"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Sản phẩm nổi bật</font></font></h2>
+        </div>
+        <div class="swiper product-swiper swiper-initialized swiper-horizontal swiper-backface-hidden">
+          <div class="swiper-wrapper" id="swiper-wrapper-279334533772258d" aria-live="polite">
+            <div class="swiper-slide swiper-slide-active" role="group" aria-label="1/5" style="width: 293.333px; margin-right: 20px;">
+              <div class="product-item">
+                <div class="image-holder text-center p-3 mb-4 border rounded-4">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="đồ chơi" class="img-fluid">
+                </div>
+                <div class="product-info ps-2">
+                  <h3 class="m-0">
+                    <a href="./pages/single-product.html" class="text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Chi tiêu cho bông</font></font></a>
+                  </h3>
+                  <div class="product-price text-primary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">320,00 đô la</font></font></div>                    
+                  <a href="./pages/cart.html" class="btn btn-outline-gray text-capitalize rounded-pill mt-4 btn-sm" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Thêm vào giỏ hàng 
+                    </font></font><svg class="cart" width="18" height="18">
+                      <use xlink:href="#cart" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide swiper-slide-next" role="group" aria-label="2/5" style="width: 293.333px; margin-right: 20px;">
+              <div class="product-item">
+                <div class="image-holder text-center p-3 mb-4 border rounded-4">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="đồ chơi" class="img-fluid">
+                </div>
+                <div class="product-info ps-2">
+                  <h3 class="m-0">
+                    <a href="./pages/single-product.html" class="text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Mẫu len</font></font></a>
+                  </h3>
+                  <div class="product-price text-primary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">320,00 đô la</font></font></div>
+                  <a href="./pages/cart.html" class="btn btn-outline-gray text-capitalize rounded-pill mt-4 btn-sm" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Thêm vào giỏ hàng 
+                    </font></font><svg class="cart" width="18" height="18">
+                      <use xlink:href="#cart" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide" role="group" aria-label="3/5" style="width: 293.333px; margin-right: 20px;">
+              <div class="product-item">
+                <div class="image-holder text-center p-3 mb-4 border rounded-4">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="đồ chơi" class="img-fluid">
+                </div>
+                <div class="product-info ps-2">
+                  <h3 class="m-0">
+                    <a href="./pages/single-product.html" class="text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Chú thỏ giản dị</font></font></a>
+                  </h3>
+                  <div class="product-price text-primary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">320,00 đô la</font></font></div>
+                  <a href="./pages/cart.html" class="btn btn-outline-gray text-capitalize rounded-pill mt-4 btn-sm" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Thêm vào giỏ hàng 
+                    </font></font><svg class="cart" width="18" height="18">
+                      <use xlink:href="#cart" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide" role="group" aria-label="4/5" style="width: 293.333px; margin-right: 20px;">
+              <div class="product-item">
+                <div class="image-holder text-center p-3 mb-4 border rounded-4">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="đồ chơi" class="img-fluid">
+                </div>
+                <div class="product-info ps-2">
+                  <h3 class="m-0">
+                    <a href="./pages/single-product.html" class="text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Uffy Unicorn</font></font></a>
+                  </h3>
+                  <div class="product-price text-primary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">320,00 đô la</font></font></div>
+                  <a href="./pages/cart.html" class="btn btn-outline-gray text-capitalize rounded-pill mt-4 btn-sm" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Thêm vào giỏ hàng 
+                    </font></font><svg class="cart" width="18" height="18">
+                      <use xlink:href="#cart" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide" role="group" aria-label="5/5" style="width: 293.333px; margin-right: 20px;">
+              <div class="product-item">
+                <div class="image-holder text-center p-3 mb-4 border rounded-4">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="đồ chơi" class="img-fluid">
+                </div>
+                <div class="product-info ps-2">
+                  <h3 class="m-0">
+                    <a href="./pages/single-product.html" class="text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Chi tiêu cho bông</font></font></a>
+                  </h3>
+                  <div class="product-price text-primary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">320,00 đô la</font></font></div>
+                  <a href="./pages/cart.html" class="btn btn-outline-gray text-capitalize rounded-pill mt-4 btn-sm" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Thêm vào giỏ hàng 
+                    </font></font><svg class="cart" width="18" height="18">
+                      <use xlink:href="#cart" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+        <div class="arrow-wrap">
+          <div class="swiper-arrow chevron-arrow-left position-absolute d-flex align-items-center border bg-light rounded-pill justify-content-center p-3 swiper-button-disabled" tabindex="-1" role="button" aria-label="Trang trước" aria-disabled="true">
+            <svg class="chevron-left" width="25" height="25">
+              <use xlink:href="#chevron-left" />
+            </svg>
+          </div>
+          <div class="swiper-arrow chevron-arrow-right position-absolute d-flex align-items-center border bg-light rounded-pill justify-content-center p-3" tabindex="0" role="button" aria-label="Trang chiếu tiếp theo">
+            <svg class="chevron-right" width="25" height="25">
+              <use xlink:href="#chevron-right" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="new-arrival" class="py-4 bg-light position-relative">
+      <div class="cloud-overlay position-absolute overflow-x-hidden w-100">
+        <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="lớp phủ biểu tượng">
+      </div>
+      <div class="container-lg">
+        <div class="display-header text-center position-relative">
+          <h2 class="display-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Mới về</font></font></h2>
+          <div class="icon-overlay position-absolute">
+            <img src="./images/star-icon-overlay.png" alt="lớp phủ biểu tượng">
+          </div>
+        </div>
+        <div class="swiper product-swiper swiper-initialized swiper-horizontal swiper-backface-hidden">
+          <div class="swiper-wrapper" id="swiper-wrapper-e51f53931bb544e8" aria-live="polite">
+            <div class="swiper-slide swiper-slide-active" role="group" aria-label="1/5" style="width: 293.333px; margin-right: 20px;">
+              <div class="product-item">
+                <div class="image-holder text-center p-3 mb-4 border rounded-4">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="đồ chơi" class="img-fluid">
+                </div>
+                <div class="product-info ps-2">
+                  <h3 class="m-0">
+                    <a href="./pages/single-product.html" class="text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Áo khoác ngoài bằng len</font></font></a>
+                  </h3>
+                  <div class="product-price text-primary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">320,00 đô la</font></font></div>
+                  <a href="./pages/cart.html" class="btn btn-outline-gray text-capitalize rounded-pill mt-4 btn-sm" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Thêm vào giỏ hàng</font></font><svg class="cart" width="18" height="18">
+                      <use xlink:href="#cart" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide swiper-slide-next" role="group" aria-label="2/5" style="width: 293.333px; margin-right: 20px;">
+              <div class="product-item">
+                <div class="image-holder text-center p-3 mb-4 border rounded-4">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="đồ chơi" class="img-fluid">
+                </div>
+                <div class="product-info ps-2">
+                  <h3 class="m-0">
+                    <a href="./pages/single-product.html" class="text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Áo nỉ</font></font></a>
+                  </h3>
+                  <div class="product-price text-primary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">320,00 đô la</font></font></div>
+                  <a href="./pages/cart.html" class="btn btn-outline-gray text-capitalize rounded-pill mt-4 btn-sm" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Thêm vào giỏ hàng</font></font><svg class="cart" width="18" height="18">
+                      <use xlink:href="#cart" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide" role="group" aria-label="3/5" style="width: 293.333px; margin-right: 20px;">
+              <div class="product-item">
+                <div class="image-holder text-center p-3 mb-4 border rounded-4">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="đồ chơi" class="img-fluid">
+                </div>
+                <div class="product-info ps-2">
+                  <h3 class="m-0">
+                    <a href="./pages/single-product.html" class="text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Chú thỏ giản dị</font></font></a>
+                  </h3>
+                  <div class="product-price text-primary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">320,00 đô la</font></font></div>
+                  <a href="./pages/cart.html" class="btn btn-outline-gray text-capitalize rounded-pill mt-4 btn-sm" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Thêm vào giỏ hàng</font></font><svg class="cart" width="18" height="18">
+                      <use xlink:href="#cart" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide" role="group" aria-label="4/5" style="width: 293.333px; margin-right: 20px;">
+              <div class="product-item">
+                <div class="image-holder text-center p-3 mb-4 border rounded-4">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="đồ chơi" class="img-fluid">
+                </div>
+                <div class="product-info ps-2">
+                  <h3 class="m-0">
+                    <a href="./pages/single-product.html" class="text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Áo thun hình kỳ lân</font></font></a>
+                  </h3>
+                  <div class="product-price text-primary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">320,00 đô la</font></font></div>
+                  <a href="./pages/cart.html" class="btn btn-outline-gray text-capitalize rounded-pill mt-4 btn-sm" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Thêm vào giỏ hàng</font></font><svg class="cart" width="18" height="18">
+                      <use xlink:href="#cart" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="swiper-slide" role="group" aria-label="5/5" style="width: 293.333px; margin-right: 20px;">
+              <div class="product-item">
+                <div class="image-holder text-center p-3 mb-4 border rounded-4">
+                  <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="đồ chơi" class="img-fluid">
+                </div>
+                <div class="product-info ps-2">
+                  <h3 class="m-0">
+                    <a href="./pages/single-product.html" class="text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Áo sơ mi kẻ sọc</font></font></a>
+                  </h3>
+                  <div class="product-price text-primary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">320,00 đô la</font></font></div>
+                  <a href="./pages/cart.html" class="btn btn-outline-gray text-capitalize rounded-pill mt-4 btn-sm" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Thêm vào giỏ hàng</font></font><svg class="cart" width="18" height="18">
+                      <use xlink:href="#cart" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+        <div class="arrow-wrap">
+          <div class="swiper-arrow chevron-arrow-left position-absolute d-flex align-items-center border rounded-pill justify-content-center p-3 swiper-button-disabled" tabindex="-1" role="button" aria-label="Trang trước" aria-disabled="true">
+            <svg class="chevron-left" width="25" height="25">
+              <use xlink:href="#chevron-left" />
+            </svg>
+          </div>
+          <div class="swiper-arrow chevron-arrow-right position-absolute d-flex align-items-center border rounded-pill justify-content-center p-3" tabindex="0" role="button" aria-label="Trang chiếu tiếp theo">
+            <svg class="chevron-right" width="25" height="25">
+              <use xlink:href="#chevron-right" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="collection" style="background-image: url(./images/bg-pattern.png); background-repeat: no-repeat; background-position: center; width: 100%; height: 810px;" class="d-flex align-items-center bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-6 col-md-10 text-center">
+            <div class="text-content">
+              <div class="display-header">
+                <h2><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Bộ sưu tập đồ chơi dễ thương</font></font></h2>
+                <p class="mx-auto"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Bạn đang tìm kiếm một món đồ chơi mềm mại mang lại niềm vui và sự thoải mái cho cả trẻ em và người lớn? Không cần tìm đâu xa, bộ sưu tập đồ chơi của chúng tôi rất tuyệt vời.</font></font></p>
+              </div>
+              <a href="./pages/shop-with-sidebar.html" class="btn btn-primary btn-md text-uppercase mt-4"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Mua ngay</font></font></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="testimonials" class="py-lg-7 bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-4">
+            <div class="quotation-mark">
+              <svg class="quote text-primary" width="167">
+                <use xlink:href="#quote" />
+              </svg>
+            </div>
+          </div>
+          <div class="col-lg-8 col-md-8 position-relative">
+            <div class="swiper review-swiper d-flex mt-5 swiper-initialized swiper-horizontal swiper-backface-hidden">
+              <div class="swiper-wrapper" id="swiper-wrapper-52587c48b9c25c43" aria-live="polite">
+                <div class="swiper-slide swiper-slide-active" role="group" aria-label="1/3" style="width: 605px; margin-right: 30px;">
+                  <div class="review-item col-md-11">
+                    <blockquote class="fs-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Tôi vừa ghé thăm cửa hàng đồ trẻ em này và rất ấn tượng với các sản phẩm họ bày bán. Từ quần áo, đồ chơi đến trò chơi giáo dục, họ có tất cả mọi thứ.</font></font></blockquote>
+                    <div class="author-detail">
+                      <div class="name text-secondary text-uppercase pt-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">- Joshna Brown</font></font></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="swiper-slide swiper-slide-next" role="group" aria-label="2/3" style="width: 605px; margin-right: 30px;">
+                  <div class="review-item col-md-11">
+                    <blockquote class="fs-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Đồ chơi rất hấp dẫn, và tôi muốn xem mình có thể làm gì với chúng. Ở một khía cạnh sâu sắc hơn, chúng đại diện cho một trong những cách mà xã hội giáo dục thế hệ trẻ.</font></font></blockquote>
+                    <div class="author-detail">
+                      <div class="name text-secondary text-uppercase pt-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">- Emma Turner</font></font></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="swiper-slide" role="group" aria-label="3/3" style="width: 605px; margin-right: 30px;">
+                  <div class="review-item col-md-11">
+                    <blockquote class="fs-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Đối với trẻ em, thường thì chiếc hộp đựng đồ chơi lại hấp dẫn hơn chính món đồ chơi đó.</font></font></blockquote>
+                    <div class="author-detail">
+                      <div class="name text-secondary text-uppercase pt-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">- Jennie Lewis</font></font></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+            <div class="swiper-pagination position-absolute text-start swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal"><span class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0" role="button" aria-label="Chuyển đến trang chiếu 1" aria-current="true"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Chuyển sang trang chiếu 2"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Chuyển sang trang chiếu 3"></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="gallery" class="py-lg-7 bg-light">
+      <div class="container-lg">
+        <div class="row justify-content-center">
+          <div class="display-header text-center position-relative">
+            <h2 class="display-2 text-center"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Phòng trưng bày của chúng tôi</font></font></h2>
+            <div class="icon-overlay position-absolute">
+              <img src="./images/star-icon-overlay.png" alt="lớp phủ biểu tượng">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3 col-md-6">
+            <figure class="gallery-item text-center">
+              <a href="#" title="BÚP BÊ" class="image-link">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="phòng trưng bày" class="img-fluid rounded-4">
+              </a>
+            </figure>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <figure class="gallery-item text-center">
+              <a href="#" title="BÚP BÊ" class="image-link">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="phòng trưng bày" class="img-fluid rounded-4">
+              </a>
+            </figure>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <figure class="gallery-item text-center">
+              <a href="#" title="BÚP BÊ" class="image-link">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="phòng trưng bày" class="img-fluid rounded-4">
+              </a>
+            </figure>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <figure class="gallery-item text-center">
+              <a href="#" title="BÚP BÊ" class="image-link">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="phòng trưng bày" class="img-fluid rounded-4">
+              </a>
+            </figure>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <figure class="gallery-item text-center">
+              <a href="#" title="BÚP BÊ" class="image-link">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="phòng trưng bày" class="img-fluid rounded-4">
+              </a>
+            </figure>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <figure class="gallery-item text-center">
+              <a href="#" data-lightbox-gallery="gallery1" title="BÚP BÊ" class="image-link">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="phòng trưng bày" class="img-fluid rounded-4">
+              </a>
+            </figure>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <figure class="gallery-item text-center">
+              <a href="#" data-lightbox-gallery="gallery1" title="BÚP BÊ" class="image-link">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="phòng trưng bày" class="img-fluid rounded-4">
+              </a>
+            </figure>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <figure class="gallery-item text-center">
+              <a href="#" data-lightbox-gallery="gallery1" title="BÚP BÊ" class="image-link">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="phòng trưng bày" class="img-fluid rounded-4">
+              </a>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="tags" class="py-lg-7 bg-light">
+      <div class="container-lg">
+        <div class="d-flex flex-wrap gap-3">
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2 hover-filled-slide-down"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Quần áo ma-nơ-canh</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Quần áo trẻ em</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Áo thun croptop</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Áo sơ mi hồng</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Áo thun cotton</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Mua sắm cho trẻ em</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Đồ chơi nhồi bông</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Đồ chơi</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Họa tiết dễ thương</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Gấu bông</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Khối</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Đồ chơi động vật</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Áo phông in câu nói</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Áo len</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Áo sơ mi màu cam</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Áo nỉ</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Quần áo trẻ em ngộ nghĩnh</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Máy quay Figet</font></font></a>
+          </div>
+          <div class="tag-item mb-2">
+            <a href="./pages/shop-with-sidebar.html" class="bg-gray-1 px-3 py-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Máy ảnh giả</font></font></a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="latest-blog" class="bg-linear py-lg-7">
+      <div class="container-lg">
+        <div class="row justify-content-center">
+          <div class="display-header text-center position-relative">
+            <h2 class="display-2 text-center"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Bài viết mới nhất</font></font></h2>
+            <div class="icon-overlay position-absolute">
+              <img src="./images/star-icon-overlay.png" alt="lớp phủ biểu tượng">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-md-6 mb-3">
+              <div class="card-item position-relative">
+                <div class="card border-0 bg-transparent">
+                  <div class="card-image mb-3">
+                    <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="bưu kiện" class="img-fluid rounded-4">
+                  </div>
+                </div>
+                <div class="card-body p-3 d-flex justify-content-center">
+                  <div class="meta-date position-absolute bg-primary text-light text-center mx-auto px-3 py-2 rounded-5">
+                    <span class="fw-bold fs-3"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">22</font></font></span><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;"> tháng 2
+                  </font></font></div>
+                  <h3 class="card-title fs-3 text-center">
+                    <a href="#" class="text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Tại sao khăn quàng cổ lại quan trọng đối với sức khỏe của bé?</font></font></a>
+                  </h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-3">
+              <div class="card-item position-relative">
+                <div class="card border-0 bg-transparent">
+                  <div class="card-image mb-3">
+                    <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="bưu kiện" class="img-fluid rounded-4">
+                  </div>
+                </div>
+                <div class="card-body p-3 d-flex justify-content-center">
+                  <div class="meta-date position-absolute bg-primary text-light text-center mx-auto px-3 py-2 rounded-5">
+                    <span class="fw-bold fs-3"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Ngày 10</font></font></span><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;"> tháng 3
+                  </font></font></div>
+                  <h3 class="card-title fs-3 text-center">
+                    <a href="#" class="text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">10 sản phẩm liền thân tốt nhất dành cho những đứa con yêu quý của bạn</font></font></a>
+                  </h3>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-3">
+              <div class="card-item position-relative">
+                <div class="card border-0 bg-transparent">
+                  <div class="card-image mb-3">
+                    <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="bưu kiện" class="img-fluid rounded-4">
+                  </div>
+                </div>
+                <div class="card-body p-3 d-flex justify-content-center">
+                  <div class="meta-date position-absolute bg-primary text-light text-center mx-auto px-3 py-2 rounded-5">
+                    <span class="fw-bold fs-3"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Ngày 18</font></font></span><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;"> tháng 4
+                  </font></font></div>
+                  <h3 class="card-title fs-3 text-center">
+                    <a href="#" class="text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Áo thun thoải mái là chìa khóa hạnh phúc cho trẻ em.</font></font></a>
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-3">
+            <a href="#" class="btn btn-primary btn-md text-uppercase text-center"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Đọc tất cả các bài đăng trên blog</font></font></a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer id="footer" class="position-relative bg-light py-lg-7 my-lg-7 mb-lg-0">
+      <div class="cloud-overlay position-absolute overflow-x-hidden w-100">
+        <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="lớp phủ biểu tượng">
+      </div>
+      <div class="container">
+        <div class="row d-flex flex-wrap justify-content-between">
+          <div class="col-lg-3 col-md-6">
+            <div class="footer-menu">
+              <h5 class="widget-title text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Liên kết nhanh</font></font></h5>
+              <ul class="menu-list list-unstyled">
+                <li class="menu-item pb-2">
+                  <a href="./index.html" class="item-anchor"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Trang chủ</font></font></a>
+                </li>
+                <li class="menu-item pb-2">
+                  <a href="./pages/about.html" class="item-anchor"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Giới thiệu</font></font></a>
+                </li>
+                <li class="menu-item pb-2">
+                  <a href="#" class="item-anchor"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Blog</font></font></a>
+                </li>
+                <li class="menu-item pb-2">
+                  <a href="./pages/shop-with-sidebar.html" class="item-anchor"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Cửa hàng</font></font></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="footer-menu">
+              <h5 class="widget-title text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Giúp đỡ</font></font></h5>
+              <ul class="menu-list list-unstyled">
+                <li class="menu-item pb-2">
+                  <a href="./pages/faqs.html" class="item-anchor"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Câu hỏi thường gặp</font></font></a>
+                </li>
+                <li class="menu-item pb-2">
+                  <a href="#" class="item-anchor"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Điều khoản</font></font></a>
+                </li>
+                <li class="menu-item pb-2">
+                  <a href="#" class="item-anchor"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Đối tác liên kết</font></font></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="footer-menu">
+              <h5 class="widget-title text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Mạng xã hội</font></font></h5>
+              <div class="social-links">
+                <ul class="list-unstyled">
+                  <li class="fw-medium pb-2">
+                    <a href="https://www.facebook.com/people/An-Nhi-Th%E1%BB%9Di-Trang-C%E1%BB%A7a-B%C3%A9/61592419492616/"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Facebook</font></font></a>
+                  </li>
+                  <li class="fw-medium pb-2">
+                    <a href="https://www.tiktok.com/@annhithoitrangcuabe" target="_blank" rel="noopener noreferrer"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">TikTok</font></font></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="footer-menu">
+              <h5 class="widget-title text-secondary"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Liên hệ</font></font></h5>
+              <div class="social-links">
+                <div class="footer-contact-phone mb-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Số điện thoại: +84 862 528 119</font></font></div>
+                <div class="footer-contact-phone mb-2"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">Email: annhithoitrangcuabe@gmail.com</font></font></div>
+                <ul class="list-unstyled social-app-icons d-flex flex-wrap gap-2 mb-0">
+                  <li>
+                    <a href="https://www.facebook.com/people/An-Nhi-Th%E1%BB%9Di-Trang-C%E1%BB%A7a-B%C3%A9/61592419492616/" target="_blank" rel="noopener noreferrer" class="social-app-icon" aria-label="Facebook">
+                      <img src="./images/fb.jpg" alt="Facebook logo">
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://zalo.me/0862528119" target="_blank" rel="noopener noreferrer" class="social-app-icon" aria-label="Zalo">
+                      <img src="./images/zalo.webp" alt="Zalo logo">
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://shopee.vn/annhithoitrangcuabe" target="_blank" rel="noopener noreferrer" class="social-app-icon" aria-label="Shopee">
+                      <img src="./images/shopee.png" alt="Shopee logo">
+                    </a>
+                  </li>
+                  <li>
+                    <a href="https://www.tiktok.com/@annhithoitrangcuabe" target="_blank" rel="noopener noreferrer" class="social-app-icon" aria-label="TikTok">
+                      <img src="./images/tiktok.webp" alt="TikTok logo">
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <div class="footer-bottom py-3 bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-md-6 mb-3">
+            <div class="d-flex flex-wrap align-items-center">
+              <img src="./images/logo.png" alt="tên thương hiệu" class="pe-5 footer-logo">
+              <p class="m-0"><font dir="auto" style="vertical-align: inherit;"><font dir="auto" style="vertical-align: inherit;">©2026 AN NHI.</font></font></p>
+            </div>
+          </div>
+      </div>
+    </div>
+    <script src="./scripts/jquery-1.11.0.min.js"></script>
+    <script src="./scripts/swiper-bundle.min.js"></script>
+    <script type="text/javascript" src="./scripts/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="./scripts/plugins.js"></script>
+    <script type="text/javascript" src="./scripts/script.js"></script></body></html>
