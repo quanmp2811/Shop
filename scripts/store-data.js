@@ -104,6 +104,8 @@
 
   function clearSampleProducts() {
     document.querySelectorAll(".product-item").forEach(node=>node.remove());
+    document.querySelectorAll(".widget-product-categories ul, .widget-product-tags ul, .widget-color-filter ul, .widget-size-filter ul, .widget-price-filter ul").forEach(list=>list.innerHTML="");
+    document.querySelectorAll(".paging-navigation .pagination").forEach(pagination=>pagination.innerHTML="");
     if (page === "single-product.html") {
       const descriptionTab=document.querySelector("#nav-home");
       if(descriptionTab)descriptionTab.innerHTML="";
