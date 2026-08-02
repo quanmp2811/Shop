@@ -610,9 +610,13 @@
     const swiper=swiperElement?.swiper;
     if(isMobileShop() && swiperElement){
       if(swiper)swiper.destroy(true,true);
-      swiperElement.classList.add("featured-grid");
+      swiperElement.className="home-product-grid";
+      wrapper.className="home-product-grid-list";
       wrapper.removeAttribute("style");
-      wrapper.querySelectorAll(".swiper-slide").forEach(slide=>slide.removeAttribute("style"));
+      [...wrapper.children].forEach(slide=>{
+        slide.className="home-product-grid-item";
+        slide.removeAttribute("style");
+      });
     } else if(swiper){
       swiper.update();
       swiper.slideTo(0,0);
@@ -664,8 +668,10 @@
     const swiperElement=wrapper.closest(".swiper");
     const swiper=swiperElement?.swiper;
     if(swiper)swiper.destroy(true,true);
-    swiperElement?.classList.add("new-arrival-grid");
+    swiperElement?.classList.add("new-arrival-grid","home-product-grid");
     wrapper.innerHTML=newest.map(slide).join("");
+    wrapper.classList.add("home-product-grid-list");
+    [...wrapper.children].forEach(slide=>slide.classList.add("home-product-grid-item"));
     const section=wrapper.closest("#new-arrival"); if(section)section.classList.toggle("d-none",!newest.length);
   }
 

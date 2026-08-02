@@ -1761,6 +1761,37 @@ animation: loader 5s infinite ease-out;
     margin: 0 !important;
   }
 
+  .home-product-grid {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  .home-product-grid-list {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 20px 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+    box-sizing: border-box;
+  }
+
+  .home-product-grid-item {
+    display: block !important;
+    width: auto !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+  }
+
   .product-item .image-holder {
     margin-bottom: .65rem !important;
     padding: .5rem !important;
