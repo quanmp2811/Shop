@@ -3,7 +3,11 @@
   const script = document.currentScript;
   const root = new URL("../", script.src);
   const loadingAssetUrl=new URL("images/loading.svg",root).href;
-  document.body.insertAdjacentHTML("beforeend", `<div id="shop-loading-indicator" role="status" aria-label="Đang tải dữ liệu"><object data="${loadingAssetUrl}?v=${Date.now()}" type="image/svg+xml" aria-label="Đang tải dữ liệu"></object></div>`);
+  const mobileLoadingAssetUrl=new URL("images/loading.json",root).href;
+  document.body.insertAdjacentHTML("beforeend", `<div id="shop-loading-indicator" role="status" aria-label="Đang tải dữ liệu"><object data="${loadingAssetUrl}?v=${Date.now()}" type="image/svg+xml" aria-label="Đang tải dữ liệu"></object><div class="mobile-loading-lottie" aria-hidden="true"></div></div>`);
+  const mobileLoadingAnimation=window.matchMedia("(max-width: 767px)").matches && window.lottie
+    ? window.lottie.loadAnimation({container:document.querySelector(".mobile-loading-lottie"),renderer:"svg",loop:true,autoplay:true,path:`${mobileLoadingAssetUrl}?v=${Date.now()}`})
+    : null;
   const loadingRestartTimer=window.setInterval(()=>{
     const loadingObject=document.querySelector("#shop-loading-indicator object");
     if(loadingObject)loadingObject.data=`${loadingAssetUrl}?v=${Date.now()}`;
@@ -1192,6 +1196,7 @@
     } catch(error) { console.warn("Không thể tự tải dữ liệu sản phẩm:", error.message); }
     finally {
       clearInterval(loadingRestartTimer);
+      mobileLoadingAnimation?.destroy();
       document.documentElement.classList.add("shop-data-ready");
       document.querySelector("#shop-loading-indicator")?.remove();
     }

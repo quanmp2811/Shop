@@ -58,6 +58,10 @@ Version: 1.1
   pointer-events: none;
 }
 
+#shop-loading-indicator .mobile-loading-lottie {
+  display: none;
+}
+
 .shop-data-ready #shop-loading-indicator {
   display: none;
 }
@@ -66,6 +70,16 @@ Version: 1.1
   #shop-loading-indicator {
     width: 300px;
     max-width: 88vw;
+  }
+
+  #shop-loading-indicator object {
+    display: none;
+  }
+
+  #shop-loading-indicator .mobile-loading-lottie {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
   }
 }
 
