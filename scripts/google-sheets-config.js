@@ -6,7 +6,7 @@ window.SHOP_GOOGLE_SHEETS = {
   variantGid: "1270375648",
   promotionSheet: "QuangCao",
   promotionGid: "77019081",
-  promotionRange: "A69:E",
+  promotionRange: "A:E",
   discountSheet: "GiamGia",
   discountGid: "1511096109",
   gallerySheet: "Trưng bày",

@@ -1002,7 +1002,7 @@
     normalizeSocialLinks();
     renderNavbar();
     wireMainCategoryLinks();
-    const promotionRows = await fetchSheet(sheetConfig.promotionSheet || "QuangCao", sheetConfig.promotionGid, sheetConfig.promotionRange || "A69:E").catch(error => {
+    const promotionRows = await fetchSheet(sheetConfig.promotionSheet || "QuangCao", sheetConfig.promotionGid, sheetConfig.promotionRange || "A:E").catch(error => {
       console.warn("Không thể tải dữ liệu quảng cáo:", error.message);
       return [];
     });
