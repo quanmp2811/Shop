@@ -3,10 +3,10 @@
   const script = document.currentScript;
   const root = new URL("../", script.src);
   const loadingAssetUrl=new URL("images/loading.svg",root).href;
-  document.body.insertAdjacentHTML("beforeend", `<div id="shop-loading-indicator" role="status" aria-label="Đang tải dữ liệu"><img src="${loadingAssetUrl}?v=${Date.now()}" alt="Đang tải dữ liệu"></div>`);
+  document.body.insertAdjacentHTML("beforeend", `<div id="shop-loading-indicator" role="status" aria-label="Đang tải dữ liệu"><object data="${loadingAssetUrl}?v=${Date.now()}" type="image/svg+xml" aria-label="Đang tải dữ liệu"></object></div>`);
   const loadingRestartTimer=window.setInterval(()=>{
-    const loadingImage=document.querySelector("#shop-loading-indicator img");
-    if(loadingImage)loadingImage.src=`${loadingAssetUrl}?v=${Date.now()}`;
+    const loadingObject=document.querySelector("#shop-loading-indicator object");
+    if(loadingObject)loadingObject.data=`${loadingAssetUrl}?v=${Date.now()}`;
   },1900);
   const sheetConfig = window.SHOP_GOOGLE_SHEETS || {};
   const page = location.pathname.split("/").pop().toLowerCase();

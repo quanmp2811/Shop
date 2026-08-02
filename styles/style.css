@@ -50,10 +50,12 @@ Version: 1.1
   pointer-events: none;
 }
 
-#shop-loading-indicator img {
+#shop-loading-indicator object {
   display: block;
   width: 100%;
-  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  pointer-events: none;
 }
 
 .shop-data-ready #shop-loading-indicator {
