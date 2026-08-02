@@ -606,7 +606,17 @@
     const isSwiper = wrapper.classList.contains("swiper-wrapper");
     wrapper.innerHTML = relatedProducts.slice(0,10).map(product => isSwiper ? slide(product) : card(product,"col-lg-3 col-md-6 col-sm-6 mb-4")).join("");
     if (section) section.classList.toggle("d-none", relatedProducts.length === 0);
-    const swiper = wrapper.closest(".swiper")?.swiper; if (swiper) { swiper.update(); swiper.slideTo(0,0); }
+    const swiperElement=wrapper.closest(".swiper");
+    const swiper=swiperElement?.swiper;
+    if(isMobileShop() && swiperElement){
+      if(swiper)swiper.destroy(true,true);
+      swiperElement.classList.add("featured-grid");
+      wrapper.removeAttribute("style");
+      wrapper.querySelectorAll(".swiper-slide").forEach(slide=>slide.removeAttribute("style"));
+    } else if(swiper){
+      swiper.update();
+      swiper.slideTo(0,0);
+    }
   }
 
   function renderGallery() {
