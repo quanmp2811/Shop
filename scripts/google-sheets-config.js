@@ -7,6 +7,8 @@ window.SHOP_GOOGLE_SHEETS = {
   promotionSheet: "QuangCao",
   promotionGid: "77019081",
   promotionRange: "A69:E",
+  discountSheet: "GiamGia",
+  discountGid: "1511096109",
   gallerySheet: "Trưng bày",
   galleryGid: "1074479811",
   keywordSheet: "TuKhoa",

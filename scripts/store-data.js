@@ -45,6 +45,7 @@
   const initialParams = new URLSearchParams(location.search);
   const saleVariantIds = new Set(String(initialParams.get("variants") || "").split(/[,/|\s]+/).map(value=>value.trim()).filter(Boolean));
   const shopFilters = { query:initialParams.get("q") || "", category:initialParams.get("category") || "", color:"", size:"", minPrice:null, maxPrice:null };
+  const SALE_CATEGORY = "sale";
   const MAIN_CATEGORIES = ["Váy","Quần áo","Phụ kiện","Đồ chơi"];
   const collapsedCategories = new Set();
   const CART_KEY = "shopCart";
@@ -52,9 +53,10 @@
   const homePageUrl = () => siteUrl("index.html");
   const isMobileShop = () => window.matchMedia("(max-width: 767px)").matches;
   const shopPageUrl = () => siteUrl(isMobileShop() ? "pages/shop-three-column.html" : "pages/shop-with-sidebar.html");
-  const saleShopPageUrl = ids => {
+  const saleShopPageUrl = (ids, hasDiscount = false) => {
     const url = new URL(shopPageUrl());
-    if (ids.length) url.searchParams.set("variants", ids.join(","));
+    if (hasDiscount) url.searchParams.set("category", SALE_CATEGORY);
+    else if (ids.length) url.searchParams.set("variants", ids.join(","));
     return url.href;
   };
 
@@ -334,6 +336,11 @@
     return Math.min(100, Math.max(0, percent));
   }
 
+  function isEnabled(value, defaultValue = false) {
+    if (value === undefined || value === null) return defaultValue;
+    return ["bat","on","true","1","co","yes"].includes(normalizeSearch(value));
+  }
+
   function priceData(originalPrice, discountValue) {
     const discount = parseDiscount(discountValue);
     const price = discount > 0 ? Math.round(originalPrice * (100 - discount) / 100) : originalPrice;
@@ -365,7 +372,7 @@
       return;
     }
     intro?.classList.remove("d-none");
-    wrapper.innerHTML = promotions.map(item => `<div class="swiper-slide"><div class="promotion-banner"><div class="promotion-media"><img src="${esc(imageUrl(item.image))}" alt="${esc(item.title || "Banner khuyến mãi")}" loading="eager">${item.discount > 0 ? `<span class="promotion-discount"><img src="${esc(siteUrl("images/sale.png"))}" alt="Sale"><b>-${item.discount}%</b></span>` : ""}</div><div class="promotion-panel"><div class="promotion-copy"><h1 class="promotion-title">${esc(item.title)}</h1>${item.content ? `<p class="promotion-content">${esc(item.content)}</p>` : ""}<a href="${esc(saleShopPageUrl(item.variantIds))}" class="btn btn-primary btn-md text-uppercase rounded-0 promotion-button">Xem chi tiết</a></div></div></div></div>`).join("");
+    wrapper.innerHTML = promotions.map(item => `<div class="swiper-slide"><div class="promotion-banner"><div class="promotion-media"><img src="${esc(imageUrl(item.image))}" alt="${esc(item.title || "Banner khuyến mãi")}" loading="eager">${item.discount > 0 ? `<span class="promotion-discount"><img src="${esc(siteUrl("images/sale.png"))}" alt="Sale"><b>-${item.discount}%</b></span>` : ""}</div><div class="promotion-panel"><div class="promotion-copy"><h1 class="promotion-title">${esc(item.title)}</h1>${item.content ? `<p class="promotion-content">${esc(item.content)}</p>` : ""}<a href="${esc(saleShopPageUrl(item.variantIds, item.discount > 0))}" class="btn btn-primary btn-md text-uppercase rounded-0 promotion-button">Xem chi tiết</a></div></div></div></div>`).join("");
     const swiperElement = wrapper.closest(".main-swiper");
     swiperElement?.classList.toggle("single-promotion", promotions.length === 1);
     const swiper = swiperElement?.swiper;
@@ -400,7 +407,7 @@
     return driveId ? `https://lh3.googleusercontent.com/d/${encodeURIComponent(driveId)}=w1600` : url;
   }
 
-  function readSheets(productRows, categoryRows = [], variantRows = [], promotionRows = []) {
+  function readSheets(productRows, categoryRows = [], variantRows = [], promotionRows = [], discountRows = []) {
     products = productRows
       .filter(row => (row.MaSP || row.STT || row["Tên sản phẩm"]) && !["Tạm ẩn", "Ngừng bán"].includes(row.TrangThai))
       .map((row, index) => ({
@@ -433,24 +440,41 @@
       if(firstRank!==secondRank)return (firstRank<0?999:firstRank)-(secondRank<0?999:secondRank);
       return first.id.localeCompare(second.id,"vi");
     });
-    variants = variantRows.filter(row => row["Mã biến thể"] && row["Mã sản phẩm"]).map(row => ({
-      id:String(row["Mã biến thể"]), productId:String(row["Mã sản phẩm"]), color:String(row["Màu sắc"] || ""),
-      size:String(row["Kích cỡ"] || ""), image:normalizeImage(row.Anh || row["Ảnh"]),
-      ...priceData(parsePrice(row.Gia ?? row["Giá"]), row.GiamGia ?? row["Giảm giá"]), stock:Number(row["Số lượng"]) || 0, sold:Number(row["Đã bán"]) || 0,
-      publishedAt:parseSheetDate(row["Ngày đăng"]), publishedDate:String(row["Ngày đăng"] || "")
-    }));
+    variants = variantRows.filter(row => row["Mã biến thể"] && row["Mã sản phẩm"]).map(row => {
+      const activeValue = row.Active ?? row["Active (Bật / Tắt)"] ?? row["Active (Bật/Tắt)"];
+      const discount = isEnabled(activeValue) ? (row.GiamGia ?? row["Giảm giá"]) : 0;
+      return {
+        id:String(row["Mã biến thể"]), productId:String(row["Mã sản phẩm"]), color:String(row["Màu sắc"] || ""),
+        size:String(row["Kích cỡ"] || ""), image:normalizeImage(row.Anh || row["Ảnh"]),
+        ...priceData(parsePrice(row.Gia ?? row["Giá"]), discount), stock:Number(row["Số lượng"]) || 0, sold:Number(row["Đã bán"]) || 0,
+        publishedAt:parseSheetDate(row["Ngày đăng"]), publishedDate:String(row["Ngày đăng"] || "")
+      };
+    });
     const promotionDiscounts = new Map();
     promotionRows.forEach(row => {
       const discount = parseDiscount(row.Giam ?? row["Giảm"] ?? row["Giảm giá"]);
       const ids = String(row.MaSale ?? row["Mã sale"] ?? "").split(/[,/|\s]+/).map(value=>value.trim()).filter(Boolean);
       ids.forEach(id => promotionDiscounts.set(id, Math.max(promotionDiscounts.get(id) || 0, discount)));
     });
+    const configuredDiscounts = new Map();
+    let storewideDiscount = 0;
+    discountRows.forEach(row => {
+      const discount = parseDiscount(row["Giảm giá %"] ?? row.GiamGia ?? row["Giảm giá"]);
+      if (!discount) return;
+      const storewide = normalizeSearch(row["Toàn sàn (Bật/ Tắt)"] ?? row["Toàn sàn"] ?? row.ToanSan);
+      if (isEnabled(storewide)) storewideDiscount = Math.max(storewideDiscount, discount);
+      const ids = String(row["Mã sản phẩm, mã biến thể"] ?? row.Ma ?? row.MaSale ?? "").split(/[,/|\s]+/).map(value=>value.trim()).filter(Boolean);
+      ids.forEach(id => configuredDiscounts.set(id, Math.max(configuredDiscounts.get(id) || 0, discount)));
+    });
     variants.forEach(variant => {
-      const bestDiscount = Math.max(variant.discount || 0, promotionDiscounts.get(variant.id) || 0);
+      const bestDiscount = Math.max(variant.discount || 0, promotionDiscounts.get(variant.id) || 0, configuredDiscounts.get(variant.id) || 0, configuredDiscounts.get(variant.productId) || 0, storewideDiscount);
       variant.discount = bestDiscount;
       variant.price = bestDiscount > 0 ? Math.round(variant.originalPrice * (100 - bestDiscount) / 100) : variant.originalPrice;
     });
     products.forEach(product => {
+      const productDiscount = Math.max(product.discount || 0, configuredDiscounts.get(product.id) || 0, storewideDiscount);
+      product.discount = productDiscount;
+      product.price = productDiscount > 0 ? Math.round(product.originalPrice * (100 - productDiscount) / 100) : product.originalPrice;
       product.variants = variants.filter(variant => variant.productId === product.id);
       if (product.variants.length) {
         product.stock = product.variants.reduce((sum, variant) => sum + variant.stock, 0);
@@ -478,8 +502,9 @@
     document.querySelector(".widget-product-tags")?.remove();
     const categoryWidget = document.querySelector(".widget-product-categories");
     const categoryList = categoryWidget?.querySelector("ul");
+    const saleProducts=products.filter(product=>product.discount>0 || product.variants.some(variant=>variant.discount>0));
     if (categoryWidget) categoryWidget.querySelector(".widget-title").textContent = "Phân loại";
-    if (categoryList) categoryList.innerHTML = `<li class="cat-item py-1"><a href="#" data-shop-filter="category" data-value="" class="${shopFilters.category?"":"text-primary fw-bold"}">Tất cả (${products.length})</a></li>` + categories.map(category => {
+    if (categoryList) categoryList.innerHTML = `<li class="cat-item py-1"><a href="#" data-shop-filter="category" data-value="" class="${shopFilters.category?"":"text-primary fw-bold"}">Tất cả (${products.length})</a></li><li class="cat-item py-1"><a href="#" data-shop-filter="category" data-value="${SALE_CATEGORY}" class="${shopFilters.category===SALE_CATEGORY?"text-primary fw-bold":""}">Sản phẩm giảm giá (${saleProducts.length})</a></li>` + categories.map(category => {
       const level=category.level ?? Math.max(0,category.id.split("/").length-1);
       const hasChildren=categories.some(other=>other.id.startsWith(`${category.id}/`) && (other.level ?? other.id.split("/").length-1)===level+1);
       const hidden=[...collapsedCategories].some(parent=>category.id.startsWith(`${parent}/`));
@@ -487,7 +512,7 @@
       return `<li class="cat-item py-1 ${hidden?"d-none":""}" data-category-level="${level}"><div class="d-flex align-items-center" style="padding-left:${level*16}px">${hasChildren?`<button type="button" class="category-toggle border-0 bg-transparent p-0 me-1 text-secondary" data-category-toggle="${esc(category.id)}" aria-label="${collapsedCategories.has(category.id)?"Mở rộng":"Thu gọn"} ${esc(category.name)}" aria-expanded="${!collapsedCategories.has(category.id)}">${collapsedCategories.has(category.id)?"▸":"▾"}</button>`:(level?`<span class="me-1 text-secondary">↳</span>`:"")}<a href="#" data-shop-filter="category" data-value="${esc(category.id)}" class="${shopFilters.category===category.id?"text-primary fw-bold":""}">${esc(category.name)} (${count})</a></div></li>`;
     }).join("");
 
-    const categoryProducts=products.filter(product=>!shopFilters.category||product.categoryIds.includes(shopFilters.category));
+    const categoryProducts=products.filter(product=>!shopFilters.category || (shopFilters.category===SALE_CATEGORY ? (product.discount>0 || product.variants.some(variant=>variant.discount>0)) : product.categoryIds.includes(shopFilters.category)));
     const categoryProductIds=new Set(categoryProducts.map(product=>product.id));
     const categoryVariants=variants.filter(variant=>categoryProductIds.has(variant.productId));
     const colors = [...new Set(categoryVariants.map(variant=>variant.color).filter(Boolean))];
@@ -542,7 +567,7 @@
     const searchScores = new Map(products.map(product=>[product.id,productSearchScore(product,shopFilters.query)]));
     const candidates = products.filter(product =>
       (!saleVariantIds.size || product.variants.some(variant=>saleVariantIds.has(variant.id))) &&
-      (!shopFilters.category || product.categoryIds.includes(shopFilters.category)) &&
+      (!shopFilters.category || (shopFilters.category===SALE_CATEGORY ? (product.discount>0 || product.variants.some(variant=>variant.discount>0)) : product.categoryIds.includes(shopFilters.category))) &&
       (!shopFilters.color || product.variants.some(variant=>variant.color===shopFilters.color)) &&
       (!shopFilters.size || product.variants.some(variant=>variant.size===shopFilters.size)) &&
       (shopFilters.minPrice===null || product.price>=shopFilters.minPrice) &&
@@ -565,9 +590,10 @@
     if (sort === "price-asc") visible.sort((a,b) => a.price-b.price);
     if (sort === "price-desc") visible.sort((a,b) => b.price-a.price);
     const displayedProducts = visible.map(product => {
-      if (!shopFilters.color && !shopFilters.size && !saleVariantIds.size) return product;
+      if (!shopFilters.color && !shopFilters.size && !saleVariantIds.size && shopFilters.category!==SALE_CATEGORY) return product;
       const selectedVariant = product.variants.find(variant =>
         (!saleVariantIds.size || saleVariantIds.has(variant.id)) &&
+        (shopFilters.category!==SALE_CATEGORY || variant.discount>0) &&
         (!shopFilters.color || variant.color === shopFilters.color) &&
         (!shopFilters.size || variant.size === shopFilters.size)
       );
@@ -859,6 +885,8 @@
       } else shopFilters[type]=filter.dataset.value || "";
       if (type === "category") {
         const url=new URL(location.href);
+        saleVariantIds.clear();
+        url.searchParams.delete("variants");
         shopFilters.category ? url.searchParams.set("category",shopFilters.category) : url.searchParams.delete("category");
         history.replaceState(null,"",url);
       }
@@ -999,7 +1027,11 @@
       const productRows = await fetchSheet(sheetConfig.productSheet || "Sản phẩm", sheetConfig.sheetGid);
       const categoryRows = sheetConfig.categorySheet ? await fetchSheet(sheetConfig.categorySheet) : [];
       const variantRows = sheetConfig.variantGid || sheetConfig.variantSheet ? await fetchSheet(sheetConfig.variantSheet || "BienThe", sheetConfig.variantGid) : [];
-      readSheets(productRows, categoryRows, variantRows, promotionRows);
+      const discountRows = sheetConfig.discountGid || sheetConfig.discountSheet ? await fetchSheet(sheetConfig.discountSheet || "GiamGia", sheetConfig.discountGid).catch(error => {
+        console.warn("Không thể tải dữ liệu giảm giá:", error.message);
+        return [];
+      }) : [];
+      readSheets(productRows, categoryRows, variantRows, promotionRows, discountRows);
       normalizeCartStock();
       if (["shop-three-column.html","shop-with-sidebar.html"].includes(page)) renderShop();
       renderDetail(); renderFeatured(); renderNewArrivals(); renderGallery(); renderSearchTags(); renderCart();
