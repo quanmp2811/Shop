@@ -75,6 +75,9 @@
     header.innerHTML = `<nav class="navbar navbar-expand-lg" aria-label="Điều hướng chính">
       <div class="container-lg">
         <a class="navbar-brand me-5" href="${homePageUrl()}"><img src="${siteUrl("images/logo.png")}" alt="Cửa hàng"></a>
+        <a class="mobile-cart-link d-lg-none" href="${siteUrl("pages/cart.html")}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart" aria-label="Giỏ hàng">
+          <svg class="cart" width="24" height="24"><use xlink:href="#cart"></use></svg><span class="bg-primary text-light rounded-pill position-absolute text-center" data-cart-count>0</span>
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2" aria-label="Mở menu">
           <svg class="navbar-icon" width="35" height="35"><use xlink:href="#navbar-icon"></use></svg>
         </button>
@@ -101,6 +104,14 @@
 
   function clearSampleProducts() {
     document.querySelectorAll(".product-item").forEach(node=>node.remove());
+    if (page === "single-product.html") {
+      const descriptionTab=document.querySelector("#nav-home");
+      if(descriptionTab)descriptionTab.innerHTML="";
+      document.querySelector("#nav-information-tab")?.remove();
+      document.querySelector("#nav-information")?.remove();
+      document.querySelector("#nav-review-tab")?.remove();
+      document.querySelector("#nav-review")?.remove();
+    }
     if (page === "index.html") {
       const promotionWrapper = document.querySelector("#intro .main-swiper .swiper-wrapper");
       if (promotionWrapper) promotionWrapper.innerHTML = "";
@@ -776,18 +787,27 @@
     document.title = `${product.name} - Cửa hàng`;
   }
 
+  function cartQuantityControl(item, compact = false) {
+    const key=esc(item.key), quantity=Math.max(1,Number(item.quantity)||1), stock=Math.max(1,cartItemStock(item));
+    return `<div class="cart-quantity-control${compact ? " cart-quantity-compact" : ""}" role="group" aria-label="Số lượng sản phẩm">
+      <button type="button" data-cart-step="-1" data-cart-key="${key}" aria-label="Giảm số lượng" ${quantity<=1?"disabled":""}>−</button>
+      <input type="number" min="1" max="${stock}" value="${quantity}" data-cart-quantity="${key}" aria-label="Số lượng">
+      <button type="button" data-cart-step="1" data-cart-key="${key}" aria-label="Tăng số lượng" ${quantity>=stock?"disabled":""}>+</button>
+    </div>`;
+  }
+
   function renderCart() {
     const items = cartDetails(); const total = cartTotal();
     const itemCount=items.reduce((sum,item)=>sum+item.quantity,0);
     document.querySelectorAll("[data-cart-count]").forEach(node=>node.textContent=itemCount);
     document.querySelectorAll("#offcanvasCart").forEach(canvas => {
       const body = canvas.querySelector(".offcanvas-body"); if (!body) return;
-      body.innerHTML = `<h4 class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-3"><span class="text-secondary">Giỏ hàng của bạn</span><span class="badge bg-dark rounded-pill">${itemCount}</span></h4>
-        <ul class="list-group mb-3">${items.length ? items.map(item => `<li class="list-group-item d-flex justify-content-between align-items-center gap-2"><img src="${esc(imageUrl(item.product.image))}" alt="" width="48" height="48" style="object-fit:cover"><div class="flex-grow-1"><a href="${detailUrl(item.id)}" class="text-dark fw-bold">${esc(item.product.name)}</a>${item.variant?`<small class="d-block text-muted">${esc(item.variant.color)} · ${esc(item.variant.size)}</small>`:""}<small class="d-block text-muted">${item.quantity} × ${currency.format(item.product.price)}</small></div><button class="btn btn-sm text-danger" type="button" data-remove-cart="${esc(item.key)}">×</button></li>`).join("") : `<li class="list-group-item text-center py-4">Giỏ hàng đang trống</li>`}</ul>
-        <div class="d-flex justify-content-between fw-bold mb-3"><span>Tổng cộng</span><span>${currency.format(total)}</span></div><div class="d-grid gap-2"><a class="btn btn-primary" href="${new URL("pages/cart.html",root).href}">Xem giỏ hàng</a></div>`;
+      body.innerHTML = `<h4 class="mb-3 border-bottom pb-3"><span class="text-secondary">Giỏ hàng của bạn</span></h4>
+        <ul class="list-group mb-3">${items.length ? items.map(item => `<li class="list-group-item d-flex justify-content-between align-items-center gap-2"><img src="${esc(imageUrl(item.product.image))}" alt="" width="48" height="48" style="object-fit:cover"><div class="flex-grow-1 min-w-0"><a href="${detailUrl(item.id)}" class="text-dark fw-bold">${esc(item.product.name)}</a>${item.variant?`<small class="d-block text-muted">${esc(item.variant.color)} · ${esc(item.variant.size)}</small>`:""}<small class="d-block text-muted">${currency.format(item.product.price)}</small>${cartQuantityControl(item,true)}</div><button class="btn btn-sm text-danger" type="button" data-remove-cart="${esc(item.key)}" aria-label="Xóa sản phẩm">×</button></li>`).join("") : `<li class="list-group-item text-center py-4">Giỏ hàng đang trống</li>`}</ul>
+        <div class="d-flex justify-content-between fw-bold mb-3"><span>Tổng cộng</span><span>${currency.format(total)}</span></div><div class="cart-view-action d-grid gap-2"><a class="btn btn-primary" href="${new URL("pages/cart.html",root).href}">Xem giỏ hàng</a></div>`;
     });
     const pageRows = document.querySelector("#cartPageRows");
-    if (pageRows) pageRows.innerHTML = items.length ? items.map(item => `<tr><td><img src="${esc(imageUrl(item.product.image))}" alt="${esc(item.product.name)}" width="70" height="70" style="object-fit:cover;border-radius:10px"></td><td><a href="${detailUrl(item.id)}" class="fw-bold text-dark">${esc(item.product.name)}</a><small class="d-block text-muted">${esc(item.id)}${item.variant ? ` · ${esc(item.variant.color)} · ${esc(item.variant.size)}` : ""}</small></td><td>${currency.format(item.product.price)}</td><td><input class="form-control" style="width:85px" type="number" min="1" max="${item.product.stock}" value="${item.quantity}" data-cart-quantity="${esc(item.key)}"></td><td>${currency.format(item.product.price*item.quantity)}</td><td><button class="btn text-danger" type="button" data-remove-cart="${esc(item.key)}">Xóa</button></td></tr>`).join("") : `<tr><td colspan="6" class="text-center py-5">Giỏ hàng đang trống. <a href="${new URL("pages/shop-with-sidebar.html",root).href}">Tiếp tục mua sắm</a></td></tr>`;
+    if (pageRows) pageRows.innerHTML = items.length ? items.map(item => `<tr><td><img src="${esc(imageUrl(item.product.image))}" alt="${esc(item.product.name)}" width="70" height="70" style="object-fit:cover;border-radius:10px"></td><td><a href="${detailUrl(item.id)}" class="fw-bold text-dark">${esc(item.product.name)}</a><small class="d-block text-muted">${esc(item.id)}${item.variant ? ` · ${esc(item.variant.color)} · ${esc(item.variant.size)}` : ""}</small></td><td>${currency.format(item.product.price)}</td><td>${cartQuantityControl(item)}</td><td>${currency.format(item.product.price*item.quantity)}</td><td><button class="btn text-danger" type="button" data-remove-cart="${esc(item.key)}">Xóa</button></td></tr>`).join("") : `<tr><td colspan="6" class="text-center py-5">Giỏ hàng đang trống. <a href="${new URL("pages/shop-with-sidebar.html",root).href}">Tiếp tục mua sắm</a></td></tr>`;
     document.querySelectorAll("[data-cart-total]").forEach(node => node.textContent=currency.format(total));
     const checkoutTable = document.querySelector(".your-order .total-price table tbody");
     if (checkoutTable) {
@@ -828,6 +848,16 @@
       return;
     }
     const add = event.target.closest("[data-add-cart]"); if (add) { event.preventDefault(); addToCart(add.dataset.addCart, document.querySelector("#quantity")?.value || 1, add.dataset.variant || ""); add.textContent="Đã thêm ✓"; setTimeout(()=>add.textContent="Thêm vào giỏ",1200); }
+    const stepButton=event.target.closest("[data-cart-step]");
+    if(stepButton){
+      const cart=getCart(),item=cart.find(entry=>cartKey(entry)===stepButton.dataset.cartKey);
+      if(!item)return;
+      const stock=cartItemStock(item),next=Math.min(stock,Math.max(1,item.quantity+Number(stepButton.dataset.cartStep)));
+      if(next===item.quantity)return;
+      item.quantity=next;
+      setCart(cart);
+      return;
+    }
     const remove = event.target.closest("[data-remove-cart]"); if (remove) setCart(getCart().filter(item=>cartKey(item)!==remove.dataset.removeCart));
   });
   document.addEventListener("submit", event => {
