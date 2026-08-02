@@ -2,6 +2,12 @@
   "use strict";
   const script = document.currentScript;
   const root = new URL("../", script.src);
+  const loadingAssetUrl=new URL("images/loading.svg",root).href;
+  document.body.insertAdjacentHTML("beforeend", `<div id="shop-loading-indicator" role="status" aria-label="Đang tải dữ liệu"><img src="${loadingAssetUrl}?v=${Date.now()}" alt="Đang tải dữ liệu"></div>`);
+  const loadingRestartTimer=window.setInterval(()=>{
+    const loadingImage=document.querySelector("#shop-loading-indicator img");
+    if(loadingImage)loadingImage.src=`${loadingAssetUrl}?v=${Date.now()}`;
+  },1900);
   const sheetConfig = window.SHOP_GOOGLE_SHEETS || {};
   const page = location.pathname.split("/").pop().toLowerCase();
   const currency = new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", maximumFractionDigits: 0 });
@@ -45,14 +51,32 @@
   const initialParams = new URLSearchParams(location.search);
   const saleVariantIds = new Set(String(initialParams.get("variants") || "").split(/[,/|\s]+/).map(value=>value.trim()).filter(Boolean));
   const shopFilters = { query:initialParams.get("q") || "", category:initialParams.get("category") || "", color:"", size:"", minPrice:null, maxPrice:null };
+  let shopCurrentPage = Math.max(1, Number(initialParams.get("p")) || 1);
   const SALE_CATEGORY = "sale";
   const MAIN_CATEGORIES = ["Váy","Quần áo","Phụ kiện","Đồ chơi"];
   const collapsedCategories = new Set();
+  let topCategoryOpen = false;
   const CART_KEY = "shopCart";
+
   const siteUrl = path => new URL(path, root).href;
   const homePageUrl = () => siteUrl("index.html");
   const isMobileShop = () => window.matchMedia("(max-width: 767px)").matches;
   const shopPageUrl = () => siteUrl(isMobileShop() ? "pages/shop-three-column.html" : "pages/shop-with-sidebar.html");
+  const setShopPage = pageNumber => {
+    shopCurrentPage = Math.max(1, Number(pageNumber) || 1);
+    const url = new URL(location.href);
+    shopCurrentPage > 1 ? url.searchParams.set("p", shopCurrentPage) : url.searchParams.delete("p");
+    history.replaceState(null,"",url);
+  };
+  const collapseCategoriesToSelection = () => {
+    collapsedCategories.clear();
+    categories.forEach(category=>{
+      const level=category.level ?? Math.max(0,category.id.split("/").length-1);
+      const hasChildren=categories.some(other=>other.id.startsWith(`${category.id}/`) && (other.level ?? other.id.split("/").length-1)===level+1);
+      const isSelectedAncestor=shopFilters.category && shopFilters.category.startsWith(`${category.id}/`);
+      if(hasChildren && !isSelectedAncestor)collapsedCategories.add(category.id);
+    });
+  };
   const saleShopPageUrl = (ids, hasDiscount = false) => {
     const url = new URL(shopPageUrl());
     if (hasDiscount) url.searchParams.set("category", SALE_CATEGORY);
@@ -78,7 +102,7 @@
       <div class="container-lg">
         <a class="navbar-brand me-5" href="${homePageUrl()}"><img src="${siteUrl("images/logo.png")}" alt="Cửa hàng"></a>
         <a class="mobile-cart-link d-lg-none" href="${siteUrl("pages/cart.html")}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart" aria-label="Giỏ hàng">
-          <svg class="cart" width="24" height="24"><use xlink:href="#cart"></use></svg><span class="bg-primary text-light rounded-pill position-absolute text-center" data-cart-count>0</span>
+          <svg class="cart" width="24" height="24"><use xlink:href="#cart"></use></svg><span class="cart-count-only text-center" data-cart-count>0</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2" aria-label="Mở menu">
           <svg class="navbar-icon" width="35" height="35"><use xlink:href="#navbar-icon"></use></svg>
@@ -94,8 +118,7 @@
             <div class="navbar-users">
               <ul class="user-items list-unstyled d-none d-lg-flex justify-content-end align-items-center order-3 flex-grow-1 gap-4 m-0">
                 <li><form id="siteSearchForm" class="d-flex align-items-center gap-1"><button class="border-0 bg-transparent p-0" type="submit" aria-label="Tìm kiếm"><svg class="search" width="18" height="18"><use xlink:href="#search"></use></svg></button><input name="q" value="${esc(shopFilters.query)}" type="search" placeholder="Tìm sản phẩm..." class="outline-none border-0 bg-transparent fst-italic"></form></li>
-                <li><a href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLogin" aria-controls="offcanvasLogin"><svg class="user" width="18" height="18"><use xlink:href="#user"></use></svg></a></li>
-                <li class="position-relative"><a href="${siteUrl("pages/cart.html")}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart"><svg class="cart" width="18" height="18"><use xlink:href="#cart"></use></svg><span class="bg-primary text-light rounded-pill position-absolute text-center" data-cart-count>0</span></a></li>
+                <li><a class="cart-count-link" href="${siteUrl("pages/cart.html")}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart" aria-label="Giỏ hàng"><svg class="cart" width="18" height="18"><use xlink:href="#cart"></use></svg><span class="cart-count-only text-center" data-cart-count>0</span></a></li>
               </ul>
             </div>
           </div>
@@ -139,7 +162,6 @@
     document.querySelectorAll("#offcanvasCart .offcanvas-body").forEach(body=>body.innerHTML="");
     const cartRows=document.querySelector("#cartPageRows");
     if (cartRows) cartRows.innerHTML="";
-    document.querySelector("#latest-blog")?.remove();
   }
 
   function normalizeSocialLinks() {
@@ -157,6 +179,40 @@
       link.href="https://zalo.me/0862528119";
       link.target="_blank";
       link.rel="noopener noreferrer";
+    });
+  }
+
+  function addIconTitles() {
+    const iconTitles = {
+      "navbar-icon":"Mở menu", "chevron-left":"Trước", "chevron-right":"Tiếp theo",
+      cart:"Giỏ hàng", quote:"Trích dẫn", user:"Tài khoản", wishlist:"Yêu thích",
+      search:"Tìm kiếm", teddybear:"Đồ chơi"
+    };
+    document.querySelectorAll("svg use").forEach(use=>{
+      const iconId=String(use.getAttribute("href") || use.getAttribute("xlink:href") || "").replace(/^#/,"");
+      const label=iconTitles[iconId];
+      if(!label)return;
+      const svg=use.closest("svg");
+      if(!svg)return;
+      svg.setAttribute("role","img");
+      svg.setAttribute("aria-label",label);
+      if(!svg.querySelector(":scope > title")){
+        const title=document.createElementNS("http://www.w3.org/2000/svg","title");
+        title.textContent=label;
+        svg.prepend(title);
+      }
+      const control=svg.closest("a,button");
+      if(control){
+        if(!control.title)control.title=label;
+        if(!control.getAttribute("aria-label"))control.setAttribute("aria-label",label);
+      }
+    });
+    document.querySelectorAll("a[aria-label],button[aria-label]").forEach(control=>{
+      if(!control.title)control.title=control.getAttribute("aria-label");
+    });
+    document.querySelectorAll(".social-app-icon img,.floating-social-links img").forEach(image=>{
+      const label=image.alt || image.closest("a")?.getAttribute("aria-label");
+      if(label && !image.title)image.title=label;
     });
   }
 
@@ -440,6 +496,7 @@
       if(firstRank!==secondRank)return (firstRank<0?999:firstRank)-(secondRank<0?999:secondRank);
       return first.id.localeCompare(second.id,"vi");
     });
+    collapseCategoriesToSelection();
     variants = variantRows.filter(row => row["Mã biến thể"] && row["Mã sản phẩm"]).map(row => {
       const activeValue = row.Active ?? row["Active (Bật / Tắt)"] ?? row["Active (Bật/Tắt)"];
       const discount = isEnabled(activeValue) ? (row.GiamGia ?? row["Giảm giá"]) : 0;
@@ -555,14 +612,51 @@
     }
   }
 
+  function renderTopShopFilters() {
+    if (page !== "shop-three-column.html") return;
+    const filterBar = document.querySelector(".filter-shop");
+    if (!filterBar) return;
+    let wrapper = document.querySelector(".shop-top-filters");
+    if (!wrapper) {
+      wrapper = document.createElement("div");
+      wrapper.className = "shop-top-filters mb-4";
+      filterBar.before(wrapper);
+    }
+    const categoryProducts = products.filter(product=>!shopFilters.category || (shopFilters.category===SALE_CATEGORY ? (product.discount>0 || product.variants.some(variant=>variant.discount>0)) : product.categoryIds.includes(shopFilters.category)));
+    const categoryProductIds = new Set(categoryProducts.map(product=>product.id));
+    const availableVariants = variants.filter(variant=>categoryProductIds.has(variant.productId));
+    const colors = [...new Set(availableVariants.map(variant=>variant.color).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"vi"));
+    const sizes = [...new Set(availableVariants.filter(variant=>!shopFilters.color || variant.color===shopFilters.color).map(variant=>variant.size).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"vi",{numeric:true}));
+    const categoryLabel = shopFilters.category===SALE_CATEGORY ? "Sản phẩm giảm giá" : (categories.find(category=>category.id===shopFilters.category)?.name || "Tất cả phân loại");
+    const categoryTree = categories.map(category=>{
+      const level=category.level ?? Math.max(0,category.id.split("/").length-1);
+      const hasChildren=categories.some(other=>other.id.startsWith(`${category.id}/`) && (other.level ?? other.id.split("/").length-1)===level+1);
+      const hidden=[...collapsedCategories].some(parent=>category.id.startsWith(`${parent}/`));
+      return `<div class="shop-category-tree-item ${hidden?"d-none":""}" style="--category-level:${level}">${hasChildren?`<button type="button" class="category-toggle" data-category-toggle="${esc(category.id)}" aria-label="${collapsedCategories.has(category.id)?"Mở rộng":"Thu gọn"} ${esc(category.name)}">${collapsedCategories.has(category.id)?"▸":"▾"}</button>`:`<span class="category-tree-indent">${level?"↳":""}</span>`}<a href="#" data-shop-filter="category" data-value="${esc(category.id)}" class="${shopFilters.category===category.id?"active":""}">${esc(category.name)}</a></div>`;
+    }).join("");
+    const priceValue = shopFilters.minPrice===null && shopFilters.maxPrice===null ? "" : `${shopFilters.minPrice ?? ""}:${shopFilters.maxPrice ?? ""}`;
+    const prices=categoryProducts.map(product=>product.price).filter(price=>Number.isFinite(price) && price>=0);
+    const minPrice=prices.length?Math.min(...prices):0, maxPrice=prices.length?Math.max(...prices):0;
+    const roughStep=Math.max(1000,(maxPrice-minPrice || maxPrice || 1000)/4);
+    const magnitude=10**Math.floor(Math.log10(roughStep));
+    const normalizedStep=roughStep/magnitude;
+    const step=(normalizedStep<=1?1:normalizedStep<=2?2:normalizedStep<=5?5:10)*magnitude;
+    const roundedMin=Math.floor(minPrice/step)*step, roundedMax=Math.max(roundedMin+step,Math.ceil(maxPrice/step)*step);
+    const priceRanges=[];
+    for(let start=roundedMin;start<roundedMax;start+=step)priceRanges.push([start,Math.min(start+step,roundedMax)]);
+    const priceOptions = [["","Tất cả mức giá"],...priceRanges.map(([min,max])=>[`${min}:${max}`,`${currency.format(min)} – ${currency.format(max)}`])].map(([value,label])=>`<option value="${value}" ${priceValue===value?"selected":""}>${label}</option>`).join("");
+    wrapper.innerHTML = `<details class="shop-category-filter" ${topCategoryOpen?"open":""}><summary class="form-select" data-top-category-summary>${esc(categoryLabel)}</summary><div class="shop-category-tree"><div class="shop-category-tree-item"><span class="category-tree-indent"></span><a href="#" data-shop-filter="category" data-value="" class="${shopFilters.category?"":"active"}">Tất cả phân loại</a></div><div class="shop-category-tree-item"><span class="category-tree-indent"></span><a href="#" data-shop-filter="category" data-value="${SALE_CATEGORY}" class="${shopFilters.category===SALE_CATEGORY?"active":""}">Sản phẩm giảm giá</a></div>${categoryTree}</div></details><select class="form-select" data-top-shop-filter="color" aria-label="Chọn màu sắc"><option value="">Tất cả màu sắc</option>${colors.map(color=>`<option value="${esc(color)}" ${shopFilters.color===color?"selected":""}>${esc(color)}</option>`).join("")}</select><select class="form-select" data-top-shop-filter="size" aria-label="Chọn kích cỡ"><option value="">Tất cả kích cỡ</option>${sizes.map(size=>`<option value="${esc(size)}" ${shopFilters.size===size?"selected":""}>${esc(size)}</option>`).join("")}</select><select class="form-select" data-top-shop-filter="price" aria-label="Chọn mức giá">${priceOptions}</select>`;
+  }
+
   function renderShop() {
     const container = document.querySelector(".product-content > .row");
     if (!container) return;
     renderSidebarFilters();
+    renderTopShopFilters();
     const sortSelect = document.querySelector("#input-sort");
     if (sortSelect && !sortSelect.dataset.ready) {
       sortSelect.innerHTML = `<option value="default">Sắp xếp mặc định</option><option value="name-asc">Tên (A - Z)</option><option value="name-desc">Tên (Z - A)</option><option value="price-asc">Giá (Thấp - Cao)</option><option value="price-desc">Giá (Cao - Thấp)</option>`;
-      sortSelect.dataset.ready = "1"; sortSelect.addEventListener("change", renderShop);
+      sortSelect.dataset.ready = "1"; sortSelect.addEventListener("change",()=>{ setShopPage(1); renderShop(); });
     }
     const searchScores = new Map(products.map(product=>[product.id,productSearchScore(product,shopFilters.query)]));
     const candidates = products.filter(product =>
@@ -608,9 +702,24 @@
         selectedVariantId:selectedVariant.id
       } : product;
     });
-    container.innerHTML = displayedProducts.length ? displayedProducts.map(product => card(product)).join("") : `<div class="col-12 text-center py-5"><h3>Chưa có sản phẩm</h3></div>`;
-    const count = document.querySelector(".showing-product p"); if (count) count.textContent = shopFilters.query ? `${visible.length} kết quả cho “${shopFilters.query}”` : `Hiển thị ${visible.length} sản phẩm`;
-    document.querySelector(".paging-navigation")?.classList.add("d-none");
+    const pageSize = page === "shop-three-column.html" ? 8 : 9;
+    const totalPages = Math.max(1, Math.ceil(displayedProducts.length / pageSize));
+    shopCurrentPage = Math.min(shopCurrentPage, totalPages);
+    const firstIndex = (shopCurrentPage - 1) * pageSize;
+    const pagedProducts = displayedProducts.slice(firstIndex, firstIndex + pageSize);
+    container.innerHTML = pagedProducts.length ? pagedProducts.map(product => card(product)).join("") : `<div class="col-12 text-center py-5"><h3>Không có sản phẩm nào</h3></div>`;
+    const count = document.querySelector(".showing-product p");
+    if (count) {
+      const range = displayedProducts.length ? `${firstIndex + 1}–${Math.min(firstIndex + pageSize, displayedProducts.length)}/${displayedProducts.length}` : "0";
+      count.textContent = shopFilters.query ? `Hiển thị ${range} kết quả cho “${shopFilters.query}”` : `Hiển thị ${range} sản phẩm`;
+    }
+    const paging = document.querySelector(".paging-navigation");
+    const pagination = paging?.querySelector(".pagination");
+    if (paging && pagination) {
+      paging.classList.toggle("d-none", totalPages <= 1);
+      pagination.innerHTML = totalPages <= 1 ? "" : `${shopCurrentPage > 1 ? `<a class="page-numbers me-3 text-center" href="#" data-shop-page="${shopCurrentPage - 1}" aria-label="Trang trước">‹</a>` : ""}${Array.from({length:totalPages},(_,index)=>index+1).map(number=>`<a class="page-numbers me-3 text-center${number===shopCurrentPage?" current":""}" href="#" data-shop-page="${number}" ${number===shopCurrentPage?'aria-current="page"':""}>${number}</a>`).join("")}${shopCurrentPage < totalPages ? `<a class="page-numbers text-center" href="#" data-shop-page="${shopCurrentPage + 1}" aria-label="Trang sau">›</a>` : ""}`;
+    }
+    addIconTitles();
   }
 
   function renderFeatured() {
@@ -864,6 +973,16 @@
   document.addEventListener("click", event => {
     const searchKeyword = event.target.closest("[data-search-keyword]");
     if (searchKeyword) trackSearchKeyword(searchKeyword.dataset.searchKeyword);
+    const categorySummary=event.target.closest("[data-top-category-summary]");
+    if(categorySummary){ topCategoryOpen=!categorySummary.closest("details")?.open; return; }
+    const pageLink=event.target.closest("[data-shop-page]");
+    if(pageLink){
+      event.preventDefault();
+      setShopPage(pageLink.dataset.shopPage);
+      renderShop();
+      document.querySelector(".product-collection")?.scrollIntoView({behavior:"smooth",block:"start"});
+      return;
+    }
     const categoryToggle=event.target.closest("[data-category-toggle]");
     if(categoryToggle){
       const categoryId=categoryToggle.dataset.categoryToggle;
@@ -873,7 +992,7 @@
     }
     const resetPrice = event.target.closest("[data-shop-price-reset]");
     if (resetPrice) {
-      shopFilters.minPrice=null; shopFilters.maxPrice=null; renderShop(); return;
+      shopFilters.minPrice=null; shopFilters.maxPrice=null; setShopPage(1); renderShop(); return;
     }
     const filter = event.target.closest("[data-shop-filter]");
     if (filter) {
@@ -883,7 +1002,14 @@
         shopFilters.minPrice=filter.dataset.min === "" ? null : Number(filter.dataset.min);
         shopFilters.maxPrice=filter.dataset.max === "" ? null : Number(filter.dataset.max);
       } else shopFilters[type]=filter.dataset.value || "";
+      setShopPage(1);
       if (type === "category") {
+        if(filter.closest(".shop-category-tree")){
+          shopFilters.color=""; shopFilters.size="";
+          shopFilters.minPrice=null; shopFilters.maxPrice=null;
+        }
+        topCategoryOpen=false;
+        collapseCategoriesToSelection();
         const url=new URL(location.href);
         saleVariantIds.clear();
         url.searchParams.delete("variants");
@@ -924,9 +1050,34 @@
     if (shopFilters.minPrice!==null && shopFilters.maxPrice!==null && shopFilters.minPrice>shopFilters.maxPrice) {
       [shopFilters.minPrice,shopFilters.maxPrice]=[shopFilters.maxPrice,shopFilters.minPrice];
     }
+    setShopPage(1);
     renderShop();
   });
   document.addEventListener("change", event => {
+    const topFilter=event.target.closest("[data-top-shop-filter]");
+    if(topFilter){
+      const type=topFilter.dataset.topShopFilter;
+      if(type==="price"){
+        const [minValue,maxValue]=topFilter.value.split(":");
+        shopFilters.minPrice=minValue ? Number(minValue) : null;
+        shopFilters.maxPrice=maxValue ? Number(maxValue) : null;
+      } else {
+        shopFilters[type]=topFilter.value || "";
+        if(type==="category"){
+          shopFilters.color=""; shopFilters.size="";
+          saleVariantIds.clear();
+          collapseCategoriesToSelection();
+          const url=new URL(location.href);
+          url.searchParams.delete("variants");
+          shopFilters.category ? url.searchParams.set("category",shopFilters.category) : url.searchParams.delete("category");
+          history.replaceState(null,"",url);
+        }
+        if(type==="color") shopFilters.size="";
+      }
+      setShopPage(1);
+      renderShop();
+      return;
+    }
     const input=event.target.closest("[data-cart-quantity]");
     if(!input)return;
     const cart=getCart(),item=cart.find(entry=>cartKey(entry)===input.dataset.cartQuantity);
@@ -1001,6 +1152,7 @@
     renderFloatingSocials();
     normalizeSocialLinks();
     renderNavbar();
+    addIconTitles();
     wireMainCategoryLinks();
     const promotionRows = await fetchSheet(sheetConfig.promotionSheet || "QuangCao", sheetConfig.promotionGid, sheetConfig.promotionRange || "A:E").catch(error => {
       console.warn("Không thể tải dữ liệu quảng cáo:", error.message);
@@ -1035,9 +1187,14 @@
       normalizeCartStock();
       if (["shop-three-column.html","shop-with-sidebar.html"].includes(page)) renderShop();
       renderDetail(); renderFeatured(); renderNewArrivals(); renderGallery(); renderSearchTags(); renderCart();
+      addIconTitles();
       window.dispatchEvent(new CustomEvent("shopdata:ready", { detail:{ products, categories } }));
     } catch(error) { console.warn("Không thể tự tải dữ liệu sản phẩm:", error.message); }
-    finally { document.documentElement.classList.add("shop-data-ready"); }
+    finally {
+      clearInterval(loadingRestartTimer);
+      document.documentElement.classList.add("shop-data-ready");
+      document.querySelector("#shop-loading-indicator")?.remove();
+    }
   }
   init();
 })();
