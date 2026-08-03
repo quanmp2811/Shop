@@ -26,12 +26,7 @@ Version: 1.1
 
 /* Hiển thị trạng thái tải dữ liệu ở chính giữa màn hình. */
 .js:not(.shop-data-ready) body::before {
-  content: "";
-  position: fixed;
-  z-index: 2999;
-  inset: 0;
-  background: rgba(255,255,255,.82);
-  backdrop-filter: blur(2px);
+  display: none;
 }
 
 .js:not(.shop-data-ready) body::after {
@@ -41,25 +36,76 @@ Version: 1.1
 #shop-loading-indicator {
   position: fixed;
   z-index: 3000;
-  top: 50%;
-  left: 50%;
-  width: 600px;
-  max-width: 90vw;
-  transform: translate(-50%,-50%);
+  inset: 0;
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background: rgba(255,255,255,.82);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  overflow: hidden;
+  overscroll-behavior: none;
+  pointer-events: auto;
+}
+
+#shop-loading-indicator .loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#shop-loading-indicator .loading-lottie {
+  display: block;
+  width: min(600px, 90vw);
+  max-height: 90dvh;
+  aspect-ratio: 16 / 9;
   filter: drop-shadow(0 4px 5px rgba(0,0,0,.1));
   pointer-events: none;
 }
 
-#shop-loading-indicator object {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border: 0;
-  pointer-events: none;
+#shop-loading-indicator .loading-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  height: 24px;
+  margin-top: -18%;
 }
 
-#shop-loading-indicator .mobile-loading-lottie {
-  display: none;
+#shop-loading-indicator .loading-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f0a2a3;
+  animation: loading-dot-bounce .9s ease-in-out infinite;
+}
+
+#shop-loading-indicator .loading-dots span:nth-child(2) {
+  animation-delay: .15s;
+}
+
+#shop-loading-indicator .loading-dots span:nth-child(3) {
+  animation-delay: .3s;
+}
+
+@keyframes loading-dot-bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #shop-loading-indicator .loading-dots span {
+    animation: none;
+  }
 }
 
 .shop-data-ready #shop-loading-indicator {
@@ -67,19 +113,8 @@ Version: 1.1
 }
 
 @media (max-width: 767px) {
-  #shop-loading-indicator {
-    width: 300px;
-    max-width: 88vw;
-  }
-
-  #shop-loading-indicator object {
-    display: none;
-  }
-
-  #shop-loading-indicator .mobile-loading-lottie {
-    display: block;
-    width: 100%;
-    aspect-ratio: 16 / 9;
+  #shop-loading-indicator .loading-lottie {
+    width: min(300px, 88vw);
   }
 }
 

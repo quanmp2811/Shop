@@ -2,16 +2,11 @@
   "use strict";
   const script = document.currentScript;
   const root = new URL("../", script.src);
-  const loadingAssetUrl=new URL("images/loading.svg",root).href;
-  const mobileLoadingAssetUrl=new URL("images/loading.json",root).href;
-  document.body.insertAdjacentHTML("beforeend", `<div id="shop-loading-indicator" role="status" aria-label="Đang tải dữ liệu"><object data="${loadingAssetUrl}?v=${Date.now()}" type="image/svg+xml" aria-label="Đang tải dữ liệu"></object><div class="mobile-loading-lottie" aria-hidden="true"></div></div>`);
-  const mobileLoadingAnimation=window.matchMedia("(max-width: 767px)").matches && window.lottie
-    ? window.lottie.loadAnimation({container:document.querySelector(".mobile-loading-lottie"),renderer:"svg",loop:true,autoplay:true,path:`${mobileLoadingAssetUrl}?v=${Date.now()}`})
+  const loadingAssetUrl=new URL("images/loading.json",root).href;
+  document.body.insertAdjacentHTML("beforeend", `<div id="shop-loading-indicator" role="status" aria-label="Đang tải dữ liệu"><div class="loading-content"><div class="loading-lottie" aria-hidden="true"></div><div class="loading-dots" aria-hidden="true"><span></span><span></span><span></span></div></div></div>`);
+  const loadingAnimation=window.lottie
+    ? window.lottie.loadAnimation({container:document.querySelector(".loading-lottie"),renderer:"svg",loop:true,autoplay:true,path:`${loadingAssetUrl}?v=${Date.now()}`})
     : null;
-  const loadingRestartTimer=window.setInterval(()=>{
-    const loadingObject=document.querySelector("#shop-loading-indicator object");
-    if(loadingObject)loadingObject.data=`${loadingAssetUrl}?v=${Date.now()}`;
-  },1900);
   const sheetConfig = window.SHOP_GOOGLE_SHEETS || {};
   const page = location.pathname.split("/").pop().toLowerCase();
   const currency = new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", maximumFractionDigits: 0 });
@@ -1195,8 +1190,7 @@
       window.dispatchEvent(new CustomEvent("shopdata:ready", { detail:{ products, categories } }));
     } catch(error) { console.warn("Không thể tự tải dữ liệu sản phẩm:", error.message); }
     finally {
-      clearInterval(loadingRestartTimer);
-      mobileLoadingAnimation?.destroy();
+      loadingAnimation?.destroy();
       document.documentElement.classList.add("shop-data-ready");
       document.querySelector("#shop-loading-indicator")?.remove();
     }
