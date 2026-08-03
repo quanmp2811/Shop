@@ -1968,6 +1968,7 @@ animation: loader 5s infinite ease-out;
   }
 
   #intro .promotion-discount {
+    right: -4px;
     width: 72px;
     height: 72px;
   }
