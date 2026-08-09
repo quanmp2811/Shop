@@ -1550,6 +1550,7 @@ animation: loader 5s infinite ease-out;
   text-overflow: ellipsis;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
 }
 
 .product-item h3 a {
@@ -1959,6 +1960,7 @@ animation: loader 5s infinite ease-out;
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
     font-size: .875rem;
   }
 
@@ -2115,6 +2117,7 @@ animation: loader 5s infinite ease-out;
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     font-family: var(--bs-body-font-family);
     font-size: .9rem;
     font-weight: 600;

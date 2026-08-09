@@ -198,7 +198,6 @@
 }
 .chocolat-wrapper .chocolat-pagination {
   float: right;
-  display: inline-block;
   padding-left: 15px;
   padding-right: 15px;
   margin-right: 15px;
@@ -247,6 +246,5 @@ body.chocolat-open > .chocolat-image-wrapper {
 .chocolat-zoomable.chocolat-zooming-out .chocolat-img {
   transition: margin .2s ease;
 }
-
 
 

@@ -349,7 +349,8 @@ opacity:1}
 [list]:not([type=date]):not([type=datetime-local]):not([type=month]):not([type=week]):not([type=time])::-webkit-calendar-picker-indicator{
 display:none!important}
 [type=button],[type=reset],[type=submit],button{
--webkit-appearance:button}
+-webkit-appearance:button;
+appearance:button}
 [type=button]:not(:disabled),[type=reset]:not(:disabled),[type=submit]:not(:disabled),button:not(:disabled){
 cursor:pointer}
 ::-moz-focus-inner{
@@ -381,6 +382,7 @@ padding:0}
 height:auto}
 [type=search]{
 -webkit-appearance:textfield;
+appearance:textfield;
 outline-offset:-2px}
 ::-webkit-search-decoration{
 -webkit-appearance:none}
@@ -391,7 +393,8 @@ font:inherit;
 -webkit-appearance:button}
 ::file-selector-button{
 font:inherit;
--webkit-appearance:button}
+-webkit-appearance:button;
+appearance:button}
 output{
 display:inline-block}
 iframe{
@@ -1649,7 +1652,6 @@ background-position:center;
 background-size:contain;
 border:var(--bs-border-width) solid var(--bs-border-color);
 -webkit-print-color-adjust:exact;
-color-adjust:exact;
 print-color-adjust:exact}
 .form-check-input[type=checkbox]{
 border-radius:.25em}

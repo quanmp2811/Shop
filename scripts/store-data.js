@@ -462,6 +462,11 @@
     return driveId ? `https://lh3.googleusercontent.com/d/${encodeURIComponent(driveId)}=w1600` : url;
   }
 
+  function splitVariantSizes(value) {
+    const sizes = String(value ?? "").split(/[\/|]+/).map(size => size.trim()).filter(Boolean);
+    return sizes.length ? sizes : [""];
+  }
+
   function readSheets(productRows, categoryRows = [], variantRows = [], promotionRows = [], discountRows = []) {
     products = productRows
       .filter(row => (row.MaSP || row.STT || row["Tên sản phẩm"]) && !["Tạm ẩn", "Ngừng bán"].includes(row.TrangThai))
@@ -496,15 +501,17 @@
       return first.id.localeCompare(second.id,"vi");
     });
     collapseCategoriesToSelection();
-    variants = variantRows.filter(row => row["Mã biến thể"] && row["Mã sản phẩm"]).map(row => {
+    variants = variantRows.filter(row => row["Mã biến thể"] && row["Mã sản phẩm"]).flatMap(row => {
       const activeValue = row.Active ?? row["Active (Bật / Tắt)"] ?? row["Active (Bật/Tắt)"];
       const discount = isEnabled(activeValue) ? (row.GiamGia ?? row["Giảm giá"]) : 0;
-      return {
-        id:String(row["Mã biến thể"]), productId:String(row["Mã sản phẩm"]), color:String(row["Màu sắc"] || ""),
-        size:String(row["Kích cỡ"] || ""), image:normalizeImage(row.Anh || row["Ảnh"]),
+      const sourceId = String(row["Mã biến thể"]);
+      return splitVariantSizes(row["Kích cỡ"]).map((size, sizeIndex) => ({
+        id:sizeIndex ? `${sourceId}--size-${sizeIndex + 1}` : sourceId, sourceId,
+        productId:String(row["Mã sản phẩm"]), color:String(row["Màu sắc"] || ""),
+        size, image:normalizeImage(row.Anh || row["Ảnh"]),
         ...priceData(parsePrice(row.Gia ?? row["Giá"]), discount), stock:Number(row["Số lượng"]) || 0, sold:Number(row["Đã bán"]) || 0,
         publishedAt:parseSheetDate(row["Ngày đăng"]), publishedDate:String(row["Ngày đăng"] || "")
-      };
+      }));
     });
     const promotionDiscounts = new Map();
     promotionRows.forEach(row => {
@@ -523,7 +530,7 @@
       ids.forEach(id => configuredDiscounts.set(id, Math.max(configuredDiscounts.get(id) || 0, discount)));
     });
     variants.forEach(variant => {
-      const bestDiscount = Math.max(variant.discount || 0, promotionDiscounts.get(variant.id) || 0, configuredDiscounts.get(variant.id) || 0, configuredDiscounts.get(variant.productId) || 0, storewideDiscount);
+      const bestDiscount = Math.max(variant.discount || 0, promotionDiscounts.get(variant.sourceId || variant.id) || 0, configuredDiscounts.get(variant.sourceId || variant.id) || 0, configuredDiscounts.get(variant.productId) || 0, storewideDiscount);
       variant.discount = bestDiscount;
       variant.price = bestDiscount > 0 ? Math.round(variant.originalPrice * (100 - bestDiscount) / 100) : variant.originalPrice;
     });
@@ -659,7 +666,7 @@
     }
     const searchScores = new Map(products.map(product=>[product.id,productSearchScore(product,shopFilters.query)]));
     const candidates = products.filter(product =>
-      (!saleVariantIds.size || product.variants.some(variant=>saleVariantIds.has(variant.id))) &&
+      (!saleVariantIds.size || product.variants.some(variant=>saleVariantIds.has(variant.sourceId || variant.id))) &&
       (!shopFilters.category || (shopFilters.category===SALE_CATEGORY ? (product.discount>0 || product.variants.some(variant=>variant.discount>0)) : product.categoryIds.includes(shopFilters.category))) &&
       (!shopFilters.color || product.variants.some(variant=>variant.color===shopFilters.color)) &&
       (!shopFilters.size || product.variants.some(variant=>variant.size===shopFilters.size)) &&
@@ -685,7 +692,7 @@
     const displayedProducts = visible.map(product => {
       if (!shopFilters.color && !shopFilters.size && !saleVariantIds.size && shopFilters.category!==SALE_CATEGORY) return product;
       const selectedVariant = product.variants.find(variant =>
-        (!saleVariantIds.size || saleVariantIds.has(variant.id)) &&
+        (!saleVariantIds.size || saleVariantIds.has(variant.sourceId || variant.id)) &&
         (shopFilters.category!==SALE_CATEGORY || variant.discount>0) &&
         (!shopFilters.color || variant.color === shopFilters.color) &&
         (!shopFilters.size || variant.size === shopFilters.size)
