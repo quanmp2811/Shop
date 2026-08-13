@@ -360,10 +360,10 @@ a[href*="checkout"] {
 }
 
 .navbar-brand img {
-  width: 95px !important;
-  height: 95px !important;
-  min-width: 95px !important;
-  min-height: 95px !important;
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  min-height: 64px !important;
   max-width: none !important;
   object-fit: contain !important;
 }
@@ -1679,9 +1679,21 @@ animation: loader 5s infinite ease-out;
   }
 }
 
-/* Footer chỉ giữ nội dung bản quyền, không lặp lại logo thương hiệu. */
-.footer-bottom img[src$="logo.png"] {
-  display: none !important;
+.footer-copyright,
+.footer-bottom .d-flex:has(> img[src$="logo.png"]) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-bottom img[src$="logo.png"],
+.footer-bottom .footer-copyright-logo {
+  display: block !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  padding: 0 !important;
+  object-fit: contain;
 }
 
 .price-range-dual {
@@ -1806,7 +1818,7 @@ animation: loader 5s infinite ease-out;
   }
 
   .site-header .navbar > .container-lg {
-    min-height: 64px;
+    min-height: 52px;
   }
 
   .navbar-brand {
@@ -1814,10 +1826,10 @@ animation: loader 5s infinite ease-out;
   }
 
   .navbar-brand img {
-    width: 58px !important;
-    height: 58px !important;
-    min-width: 58px !important;
-    min-height: 58px !important;
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+    min-height: 46px !important;
   }
 
   .navbar-toggler {
@@ -2143,6 +2155,20 @@ animation: loader 5s infinite ease-out;
     font-size: .72rem;
   }
 
+  .product-item .product-detail-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  #selling-product .stock-button-wrap button[name="add-to-cart"]:disabled {
+    opacity: 1;
+    color: #fff;
+    border-color: var(--bs-danger);
+    background: var(--bs-danger);
+  }
+
   #new-arrival .new-arrival-grid .swiper-wrapper {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.25rem .75rem;
@@ -2289,6 +2315,17 @@ animation: loader 5s infinite ease-out;
   .footer-bottom p {
     font-size: .75rem;
     text-align: center;
+  }
+
+  .footer-copyright {
+    justify-content: center;
+  }
+
+  .footer-bottom img[src$="logo.png"],
+  .footer-bottom .footer-copyright-logo {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
   }
 
   #scroll-top-btn {

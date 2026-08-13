@@ -47,6 +47,10 @@
     return totalWeight ? matchedWeight/totalWeight*100 : 0;
   }
   let products = [], categories = [], variants = [], galleryProductIds = null, searchKeywords = [];
+  let cachedPromotionRows = [];
+  const DATA_REFRESH_INTERVAL = 5000;
+  let dataRefreshRunning = false;
+  let storeDataSignature = "";
   const initialParams = new URLSearchParams(location.search);
   const saleVariantIds = new Set(String(initialParams.get("variants") || "").split(/[,/|\s]+/).map(value=>value.trim()).filter(Boolean));
   const shopFilters = { query:initialParams.get("q") || "", category:initialParams.get("category") || "", color:"", size:"", minPrice:null, maxPrice:null };
@@ -235,7 +239,7 @@
         <div class="col-lg-3 col-md-6"><div class="footer-menu"><h5 class="widget-title text-secondary">Liên hệ</h5>
           <div class="footer-contact-phone mb-2">Số điện thoại: +84 862 528 119</div><div class="footer-contact-phone mb-2">Email: annhithoitrangcuabe@gmail.com</div>
           <ul class="list-unstyled social-app-icons d-flex flex-wrap gap-2 mb-0">
-            <li><a href="https://www.facebook.com/people/An-Nhi-Th%E1%BB%9Di-Trang-C%E1%BB%A7a-B%C3%A9/61592419492616/" target="_blank" rel="noopener noreferrer" class="social-app-icon" aria-label="Facebook"><img src="${siteUrl("images/fb.jpg")}" alt="Facebook"></a></li>
+            <li><a href="https://www.facebook.com/people/An-Nhi-Th%E1%BB%9Di-Trang-C%E1%BB%A7a-B%C3%A9/61592419492616/" target="_blank" rel="noopener noreferrer" class="social-app-icon" aria-label="Facebook"><img src="${siteUrl("images/fb.png")}" alt="Facebook"></a></li>
             <li><a href="https://zalo.me/0862528119" target="_blank" rel="noopener noreferrer" class="social-app-icon" aria-label="Zalo"><img src="${siteUrl("images/zalo.webp")}" alt="Zalo"></a></li>
             <li><a href="https://shopee.vn/annhithoitrangcuabe" target="_blank" rel="noopener noreferrer" class="social-app-icon" aria-label="Shopee"><img src="${siteUrl("images/shopee.png")}" alt="Shopee"></a></li>
             <li><a href="https://www.tiktok.com/@annhithoitrangcuabe" target="_blank" rel="noopener noreferrer" class="social-app-icon" aria-label="TikTok"><img src="${siteUrl("images/tiktok.webp")}" alt="TikTok"></a></li>
@@ -247,7 +251,7 @@
     const oldFooter=document.querySelector("#footer");
     if (oldFooter) oldFooter.outerHTML=footerHtml;
     else document.body.insertAdjacentHTML("beforeend",footerHtml);
-    document.querySelector("#footer").insertAdjacentHTML("afterend",`<div class="footer-bottom py-3 bg-light"><div class="container"><p class="m-0">©2026 AN NHI.</p></div></div>`);
+    document.querySelector("#footer").insertAdjacentHTML("afterend",`<div class="footer-bottom py-3 bg-light"><div class="container"><div class="footer-copyright"><img src="${siteUrl("images/logo.png")}" alt="AN NHI" class="footer-copyright-logo"><p class="m-0">©2026 AN NHI.</p></div></div></div>`);
   }
 
   function renderFloatingSocials() {
@@ -261,7 +265,7 @@
     window.addEventListener("scroll",updateScrollButton,{passive:true}); updateScrollButton();
     document.querySelector(".floating-social-links")?.remove();
     document.body.insertAdjacentHTML("beforeend",`<aside class="floating-social-links" aria-label="Liên hệ nhanh">
-      <a href="https://www.facebook.com/people/An-Nhi-Th%E1%BB%9Di-Trang-C%E1%BB%A7a-B%C3%A9/61592419492616/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img src="${siteUrl("images/fb.jpg")}" alt=""></a>
+      <a href="https://www.facebook.com/people/An-Nhi-Th%E1%BB%9Di-Trang-C%E1%BB%A7a-B%C3%A9/61592419492616/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img src="${siteUrl("images/fb.png")}" alt=""></a>
       <a href="https://zalo.me/0862528119" target="_blank" rel="noopener noreferrer" aria-label="Zalo"><img src="${siteUrl("images/zalo.webp")}" alt=""></a>
       <a href="https://shopee.vn/annhithoitrangcuabe" target="_blank" rel="noopener noreferrer" aria-label="Shopee"><img src="${siteUrl("images/shopee.png")}" alt=""></a>
       <a href="https://www.tiktok.com/@annhithoitrangcuabe" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><img src="${siteUrl("images/tiktok.webp")}" alt=""></a>
@@ -554,11 +558,11 @@
   }
 
   function card(product, className = "col-lg-4 col-md-6 col-sm-6 mb-5") {
-    return `<div class="${className}"><div class="product-item" data-product-id="${esc(product.id)}"><a class="image-holder text-center p-3 mb-4 border rounded-4 d-block" href="${detailUrl(product.id)}"><img src="${esc(imageUrl(product.image))}" alt="${esc(product.name)}" class="img-fluid" loading="lazy"></a><div class="product-info ps-2"><h3 class="m-0"><a href="${detailUrl(product.id)}" class="text-secondary">${esc(product.name)}</a></h3>${priceHtml(product)}<small class="text-muted">${product.stock > 0 ? `Còn ${product.stock} sản phẩm` : "Tạm hết hàng"} · Đã bán ${product.sold}</small><br><button type="button" data-add-cart="${esc(product.id)}" data-variant="${esc(product.selectedVariantId || "")}" class="btn btn-outline-gray text-capitalize rounded-pill mt-3 btn-sm" ${product.stock<=0?"disabled":""}>Thêm vào giỏ</button></div></div></div>`;
+    return `<div class="${className}"><div class="product-item" data-product-id="${esc(product.id)}"><a class="image-holder text-center p-3 mb-4 border rounded-4 d-block" href="${detailUrl(product.id)}"><img src="${esc(imageUrl(product.image))}" alt="${esc(product.name)}" class="img-fluid" loading="lazy"></a><div class="product-info ps-2"><h3 class="m-0"><a href="${detailUrl(product.id)}" class="text-secondary">${esc(product.name)}</a></h3>${priceHtml(product)}<small class="text-muted">${product.stock > 0 ? `Còn ${product.stock} sản phẩm` : "Tạm hết hàng"} · Đã bán ${product.sold}</small><br><a href="${detailUrl(product.id)}" class="btn btn-outline-gray text-capitalize rounded-pill mt-3 btn-sm product-detail-link">Xem chi tiết</a></div></div></div>`;
   }
 
   function slide(product) {
-    return `<div class="swiper-slide"><div class="product-item"><a class="image-holder text-center p-3 mb-4 border rounded-4 d-block" href="${detailUrl(product.id)}"><img src="${esc(imageUrl(product.image))}" alt="${esc(product.name)}" class="img-fluid" loading="lazy"></a><div class="product-info ps-2"><h3 class="m-0"><a href="${detailUrl(product.id)}" class="text-secondary">${esc(product.name)}</a></h3>${priceHtml(product)}<small class="text-muted">Còn ${product.stock} · Đã bán ${product.sold}</small><br><button type="button" data-add-cart="${esc(product.id)}" data-variant="${esc(product.selectedVariantId || "")}" class="btn btn-outline-gray text-capitalize rounded-pill mt-3 btn-sm" ${product.stock<=0?"disabled":""}>Thêm vào giỏ</button></div></div></div>`;
+    return `<div class="swiper-slide"><div class="product-item"><a class="image-holder text-center p-3 mb-4 border rounded-4 d-block" href="${detailUrl(product.id)}"><img src="${esc(imageUrl(product.image))}" alt="${esc(product.name)}" class="img-fluid" loading="lazy"></a><div class="product-info ps-2"><h3 class="m-0"><a href="${detailUrl(product.id)}" class="text-secondary">${esc(product.name)}</a></h3>${priceHtml(product)}<small class="text-muted">Còn ${product.stock} · Đã bán ${product.sold}</small><br><a href="${detailUrl(product.id)}" class="btn btn-outline-gray text-capitalize rounded-pill mt-3 btn-sm product-detail-link">Xem chi tiết</a></div></div></div>`;
   }
 
   function renderSidebarFilters() {
@@ -901,20 +905,26 @@
     if (product.variants.length && description) {
       const colors = [...new Set(product.variants.map(v => v.color).filter(Boolean))];
       const sizes = [...new Set(product.variants.map(v => v.size).filter(Boolean))];
-      description.insertAdjacentHTML("afterend", `<div id="variantPicker" class="mb-3"><div class="row g-2"><div class="col-sm-6"><label class="form-label fw-bold">Màu sắc</label><select class="form-select" id="variantColor">${colors.map(value=>`<option>${esc(value)}</option>`).join("")}</select></div><div class="col-sm-6"><label class="form-label fw-bold">Kích cỡ</label><select class="form-select" id="variantSize">${sizes.map(value=>`<option>${esc(value)}</option>`).join("")}</select></div></div><small id="variantStatus" class="d-block mt-2 text-muted"></small></div>`);
+      const variantOption = value => `<option value="${esc(value)}">${esc(value)}</option>`;
+      description.insertAdjacentHTML("afterend", `<div id="variantPicker" class="mb-3"><div class="row g-2"><div class="col-sm-6"><label class="form-label fw-bold">Màu sắc</label><select class="form-select" id="variantColor">${colors.map(variantOption).join("")}</select></div><div class="col-sm-6"><label class="form-label fw-bold">Kích cỡ</label><select class="form-select" id="variantSize">${sizes.map(variantOption).join("")}</select></div></div><small id="variantStatus" class="d-block mt-2 text-muted"></small></div>`);
       const updateVariant = event => {
+        const currentProduct=products.find(item=>item.id===product.id) || product;
         const colorSelect=document.querySelector("#variantColor"), sizeSelect=document.querySelector("#variantSize");
         const color=colorSelect?.value || "";
-        const availableSizes=[...new Set(product.variants.filter(variant=>!color||variant.color===color).map(variant=>variant.size).filter(Boolean))];
+        const availableSizes=[...new Set(currentProduct.variants.filter(variant=>!color||variant.color===color).map(variant=>variant.size).filter(Boolean))];
         if (sizeSelect && (event?.target===colorSelect || !availableSizes.includes(sizeSelect.value))) {
           const previousSize=sizeSelect.value;
-          sizeSelect.innerHTML=availableSizes.map(value=>`<option>${esc(value)}</option>`).join("");
+          sizeSelect.innerHTML=availableSizes.map(variantOption).join("");
           sizeSelect.value=availableSizes.includes(previousSize)?previousSize:(availableSizes[0]||"");
         }
         const size=sizeSelect?.value || "";
-        const selected=product.variants.find(v=>(!color||v.color===color)&&(!size||v.size===size));
+        const selected=currentProduct.variants.find(v=>(!color||v.color===color)&&(!size||v.size===size));
         const button=section.querySelector("button[name='add-to-cart']");
-        if (button) { button.dataset.variant=selected?.id || ""; button.disabled=!selected || selected.stock<=0; }
+        if (button) {
+          button.dataset.variant=selected?.id || "";
+          button.disabled=!selected || selected.stock<=0;
+          button.textContent=selected?.stock>0 ? "Thêm vào giỏ hàng" : "Hết hàng";
+        }
         const quantityInput=section.querySelector("#quantity");
         if (quantityInput) {
           quantityInput.max=Math.max(0,selected?.stock || 0);
@@ -922,8 +932,12 @@
           quantityInput.disabled=!selected || selected.stock<=0;
         }
         if (selected) setDetailPrice(selected);
-        if (selected && image) selectGalleryImage(selected.image || product.image);
-        const status=document.querySelector("#variantStatus"); if(status) status.textContent=selected ? `Còn ${selected.stock} · Đã bán ${selected.sold}` : "Biến thể này chưa có hàng";
+        if (selected && image) selectGalleryImage(selected.image || currentProduct.image);
+        const status=document.querySelector("#variantStatus"); if(status) {
+          status.textContent=selected ? `Còn ${selected.stock} · Đã bán ${selected.sold}` : "Biến thể này chưa có hàng";
+          status.classList.remove("text-danger");
+          status.classList.add("text-muted");
+        }
         if (event) holdSelectedImage(10000);
       };
       document.querySelector("#variantPicker").addEventListener("change", updateVariant); updateVariant();
@@ -942,7 +956,12 @@
       quantityInput.disabled=product.stock<=0;
     }
     const addButton = section.querySelector("button[name='add-to-cart']");
-    if (addButton && product.stock > 0) { addButton.type="button"; addButton.dataset.addCart=product.id; addButton.textContent="Thêm vào giỏ hàng"; }
+    if (addButton && product.stock > 0) {
+      addButton.type="button";
+      addButton.dataset.addCart=product.id;
+      const selectedVariant=product.variants.find(variant=>variant.id===addButton.dataset.variant);
+      addButton.textContent=!product.variants.length||selectedVariant?.stock>0 ? "Thêm vào giỏ hàng" : "Hết hàng";
+    }
     document.title = `${product.name} - Cửa hàng`;
   }
 
@@ -1133,6 +1152,69 @@
   });
   window.addEventListener("storage", event => { if(event.key===CART_KEY)renderCart(); });
 
+  function refreshVisibleData() {
+    normalizeCartStock();
+    if (["shop-three-column.html","shop-with-sidebar.html"].includes(page)) renderShop();
+    renderFeatured();
+    renderNewArrivals();
+    renderGallery();
+    renderCart();
+    if (page === "single-product.html") {
+      const id=new URLSearchParams(location.search).get("id");
+      const product=products.find(item=>item.id===id) || products[0];
+      const colorSelect=document.querySelector("#variantColor");
+      const sizeSelect=document.querySelector("#variantSize");
+      const title=document.querySelector("#selling-product .product-title");
+      if (title && product) title.textContent=product.name;
+      if (product && colorSelect && sizeSelect) {
+        const previousColor=colorSelect.value, previousSize=sizeSelect.value;
+        const colors=[...new Set(product.variants.map(variant=>variant.color).filter(Boolean))];
+        colorSelect.innerHTML=colors.map(value=>`<option value="${esc(value)}">${esc(value)}</option>`).join("");
+        colorSelect.value=colors.includes(previousColor)?previousColor:(colors[0]||"");
+        const sizes=[...new Set(product.variants.filter(variant=>!colorSelect.value||variant.color===colorSelect.value).map(variant=>variant.size).filter(Boolean))];
+        sizeSelect.innerHTML=sizes.map(value=>`<option value="${esc(value)}">${esc(value)}</option>`).join("");
+        sizeSelect.value=sizes.includes(previousSize)?previousSize:(sizes[0]||"");
+        colorSelect.dispatchEvent(new Event("change",{bubbles:true}));
+      } else if (product) {
+        const price=document.querySelector("#selling-product .product-price");
+        const stock=document.querySelector("#selling-product .product-quantity > .fs-5");
+        const button=document.querySelector("#selling-product button[name='add-to-cart']");
+        const quantity=document.querySelector("#selling-product #quantity");
+        if (price) price.outerHTML=priceHtml(product);
+        if (stock) stock.textContent=product.stock>0?`Còn ${product.stock} sản phẩm · Đã bán ${product.sold}`:"Tạm hết hàng";
+        if (button) { button.disabled=product.stock<=0; button.textContent=product.stock>0?"Thêm vào giỏ hàng":"Hết hàng"; }
+        if (quantity) { quantity.max=Math.max(0,product.stock); quantity.disabled=product.stock<=0; }
+      }
+    }
+    addIconTitles();
+    window.dispatchEvent(new CustomEvent("shopdata:updated", { detail:{ products, categories } }));
+  }
+
+  async function refreshStoreData() {
+    if (dataRefreshRunning || document.hidden) return;
+    dataRefreshRunning=true;
+    try {
+      const [productRows,categoryRows,variantRows,promotionRows,discountRows]=await Promise.all([
+        fetchSheet(sheetConfig.productSheet || "Sản phẩm",sheetConfig.sheetGid),
+        sheetConfig.categorySheet ? fetchSheet(sheetConfig.categorySheet) : Promise.resolve([]),
+        sheetConfig.variantGid || sheetConfig.variantSheet ? fetchSheet(sheetConfig.variantSheet || "BienThe",sheetConfig.variantGid) : Promise.resolve([]),
+        fetchSheet(sheetConfig.promotionSheet || "QuangCao",sheetConfig.promotionGid,sheetConfig.promotionRange || "A:E").catch(()=>cachedPromotionRows),
+        sheetConfig.discountGid || sheetConfig.discountSheet ? fetchSheet(sheetConfig.discountSheet || "GiamGia",sheetConfig.discountGid).catch(()=>[]) : Promise.resolve([])
+      ]);
+      const nextSignature=JSON.stringify([productRows,categoryRows,variantRows,promotionRows,discountRows]);
+      if (nextSignature===storeDataSignature) return;
+      storeDataSignature=nextSignature;
+      cachedPromotionRows=promotionRows;
+      readSheets(productRows,categoryRows,variantRows,promotionRows,discountRows);
+      if (page === "index.html") renderPromotions(promotionRows);
+      refreshVisibleData();
+    } catch(error) {
+      console.warn("Không thể cập nhật dữ liệu tự động:",error.message);
+    } finally {
+      dataRefreshRunning=false;
+    }
+  }
+
   async function init() {
     const canonicalHome=new URL(homePageUrl());
     if ((page === "index.html" || !page) && location.pathname !== canonicalHome.pathname) {
@@ -1165,6 +1247,7 @@
       return [];
     });
     if (page === "index.html") renderPromotions(promotionRows);
+    cachedPromotionRows=promotionRows;
     if (page === "index.html") {
       const featuredRows = await fetchSheet(sheetConfig.gallerySheet || "Trưng bày", sheetConfig.galleryGid).catch(error => {
         console.warn("Không thể tải danh sách trưng bày:", error.message);
@@ -1190,6 +1273,7 @@
         return [];
       }) : [];
       readSheets(productRows, categoryRows, variantRows, promotionRows, discountRows);
+      storeDataSignature=JSON.stringify([productRows,categoryRows,variantRows,promotionRows,discountRows]);
       normalizeCartStock();
       if (["shop-three-column.html","shop-with-sidebar.html"].includes(page)) renderShop();
       renderDetail(); renderFeatured(); renderNewArrivals(); renderGallery(); renderSearchTags(); renderCart();
@@ -1202,5 +1286,8 @@
       document.querySelector("#shop-loading-indicator")?.remove();
     }
   }
-  init();
+  init().then(()=>{
+    window.setInterval(refreshStoreData,DATA_REFRESH_INTERVAL);
+    document.addEventListener("visibilitychange",()=>{ if(!document.hidden)refreshStoreData(); });
+  });
 })();
